@@ -1,0 +1,22 @@
+{
+  "ledger_balance": 500,
+  "last_spend": "2026-08-22T21:06:14.845080+00:00",
+  "last_cycle": {
+    "cycle": 39,
+    "profile": "omniprime",
+    "ts": "2026-08-23T11:23:50.770956+00:00",
+    "shipped": [
+      "scripts/hermes_verify_coldstart_drill.py",
+      "scripts/_coldstart_driver.py"
+    ],
+    "repaired": [
+      "BOOTSTRAP.md Stage 1 (ERR_BOOT_RUNTIME)"
+    ],
+    "roadmap": {
+      "OS-4": "DONE",
+      "OS-6": "DONE"
+    },
+    "verify_gate": "29/29 PASS",
+    "coldstart_drill": "booted 3/3"
+  }
+}

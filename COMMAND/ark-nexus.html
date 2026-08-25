@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARK-NEXUS v2 // EMERIS Command Deck</title>
+<style>
+  :root {
+    --bg: #030706;
+    --panel: rgba(6, 20, 16, 0.78);
+    --panel-2: rgba(10, 32, 25, 0.6);
+    --border: #0d3829;
+    --accent: #00ff88;
+    --accent-dim: #10b981;
+    --glow: rgba(0, 255, 136, 0.35);
+    --text: #d4fced;
+    --muted: #5e917d;
+    --warn: #fbbf24;
+    --bad: #f87171;
+    --sky: #38bdf8;
+    --font: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,255,136,0.06), transparent),
+      radial-gradient(ellipse 60% 40% at 90% 100%, rgba(56,189,248,0.04), transparent);
+  }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: #0d3829; border-radius: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 22px; border-bottom: 1px solid var(--border);
+    background: rgba(3, 7, 6, 0.85); backdrop-filter: blur(10px);
+    position: sticky; top: 0; z-index: 50; gap: 12px; flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid var(--accent); display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 14px var(--glow), inset 0 0 10px rgba(0,255,136,0.25);
+    color: var(--accent); font-size: 15px;
+  }
+  .brand h1 { font-size: 15px; letter-spacing: 3px; color: var(--accent); text-transform: uppercase; }
+  .brand span { font-size: 10px; color: var(--muted); letter-spacing: 1px; display: block; margin-top: 2px; }
+  .hud-metrics { display: flex; gap: 18px; font-size: 11px; color: var(--muted); flex-wrap: wrap; }
+  .hud-metrics b { color: var(--text); font-weight: 700; }
+  .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: pulse 1.5s infinite alternate; margin-right: 6px; }
+  @keyframes pulse { 0% { transform: scale(0.8); opacity: 0.6; } 100% { transform: scale(1.3); opacity: 1; } }
+  .badge { padding: 3px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 10px; color: var(--accent); }
+
+  /* Hero */
+  .hero { display: flex; height: 58vh; min-height: 400px; border-bottom: 1px solid var(--border); }
+  #orbWrap { flex: 1; position: relative; min-width: 0; }
+  #orbCanvas { display: block; width: 100%; height: 100%; cursor: grab; }
+  #orbCanvas.dragging { cursor: grabbing; }
+  .orb-overlay { position: absolute; top: 14px; left: 16px; pointer-events: none; z-index: 5; }
+  .orb-overlay h2 { font-size: 12px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
+  .orb-overlay .sub { font-size: 10px; color: var(--muted); }
+  .controls-hint {
+    position: absolute; bottom: 14px; left: 16px; pointer-events: none;
+    font-size: 10px; color: var(--muted); background: var(--panel);
+    border: 1px solid var(--border); padding: 8px 12px; border-radius: 6px; z-index: 5;
+  }
+  .legend { position: absolute; bottom: 14px; right: 16px; pointer-events: none; z-index: 5;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; font-size: 9px; }
+  .legend-row { display: flex; align-items: center; gap: 6px; margin: 3px 0; color: var(--muted); }
+  .legend-swat { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+  /* Inspector */
+  .inspector {
+    width: 350px; border-left: 1px solid var(--border);
+    background: var(--panel); display: flex; flex-direction: column; min-width: 0;
+  }
+  .inspector-header {
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    font-size: 11px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .inspector-header small { color: var(--muted); font-size: 9px; letter-spacing: 1px; }
+  .search-bar { padding: 10px 16px; border-bottom: 1px solid var(--border); position: relative; }
+  .search-input {
+    width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+    color: var(--text); padding: 8px 12px; border-radius: 4px; font-family: inherit; font-size: 11px; outline: none;
+  }
+  .search-input:focus { border-color: var(--accent); box-shadow: 0 0 8px var(--glow); }
+  .search-kbd { position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-size: 9px; color: var(--muted); }
+  .node-list { flex: 1; overflow-y: auto; padding: 10px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .node-card {
+    background: rgba(13, 56, 41, 0.25); border: 1px solid rgba(13,56,41,0.6);
+    padding: 9px 11px; border-radius: 5px; cursor: pointer; transition: all 0.15s ease;
+  }
+  .node-card:hover, .node-card.active { border-color: var(--accent); background: rgba(0,255,136,0.07); transform: translateX(3px); }
+  .node-title { font-size: 11px; font-weight: 700; color: var(--accent-dim); margin-bottom: 3px; word-break: break-all; }
+  .node-meta { font-size: 9px; color: var(--muted); display: flex; justify-content: space-between; }
+
+  /* Code Garden */
+  .garden-wrap { border-bottom: 1px solid var(--border); position: relative; }
+  .garden-head { padding: 12px 22px 4px; display: flex; justify-content: space-between; align-items: baseline; }
+  .garden-head h2 { font-size: 12px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; }
+  .garden-head p { font-size: 10px; color: var(--muted); }
+  #gardenCanvas { display: block; width: 100%; height: 280px; cursor: crosshair; }
+
+  /* Telemetry grid */
+  .tele-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; padding: 18px 22px; }
+  .card {
+    background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px;
+    backdrop-filter: blur(8px);
+  }
+  .card h3 { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .big { font-size: 26px; font-weight: 700; color: var(--text); }
+  .big small { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .row { display: flex; justify-content: space-between; font-size: 11px; margin: 5px 0; color: var(--muted); }
+  .row b { color: var(--text); font-weight: 600; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .chip { font-size: 9px; padding: 3px 7px; border-radius: 4px; border: 1px solid var(--border); }
+  .chip.ok { color: var(--accent); border-color: rgba(0,255,136,0.4); background: rgba(0,255,136,0.08); }
+  .chip.bad { color: var(--bad); border-color: rgba(248,113,113,0.4); background: rgba(248,113,113,0.08); }
+  .chip.warn { color: var(--warn); border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.08); }
+  .meter { height: 6px; background: rgba(0,0,0,0.4); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+  .meter > div { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent-dim), var(--accent)); box-shadow: 0 0 8px var(--glow); }
+  .drift-chart { width: 100%; height: 60px; margin-top: 6px; }
+
+  /* Triad card specifics */
+  .phase-tag { font-size: 10px; letter-spacing: 1px; color: var(--sky); border: 1px solid rgba(56,189,248,0.4);
+    padding: 2px 8px; border-radius: 4px; background: rgba(56,189,248,0.08); }
+  .ring-tag { font-size: 10px; letter-spacing: 1px; color: var(--accent); border: 1px solid rgba(0,255,136,0.4);
+    padding: 2px 8px; border-radius: 4px; background: rgba(0,255,136,0.08); text-transform: uppercase; }
+
+  /* Signal feed */
+  .feed-card { grid-column: 1 / -1; }
+  .feed-wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; }
+  .feed-col h4 { font-size: 9px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+  .feed-list { display: flex; flex-direction: column; gap: 5px; max-height: 220px; overflow-y: auto; padding-right: 4px; }
+  .feed-item {
+    display: flex; align-items: center; gap: 8px; font-size: 10px;
+    padding: 5px 8px; border-radius: 4px; background: rgba(13,56,41,0.22);
+    border-left: 2px solid var(--border);
+  }
+  .feed-item .t { color: var(--muted); flex-shrink: 0; font-size: 9px; }
+  .feed-item .a { color: var(--sky); flex-shrink: 0; width: 62px; }
+  .feed-item .x { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+  .feed-item.chain { border-left-color: var(--warn); }
+  .feed-item.boot { border-left-color: var(--accent); }
+  .feed-item.packet { border-left-color: var(--sky); }
+  .feed-item.token { border-left-color: #a78bfa; }
+  .feed-item.commit { border-left-color: #f472b6; }
+  .sig-item {
+    font-size: 10px; padding: 7px 9px; border-radius: 4px; margin-bottom: 6px;
+    background: rgba(56,189,248,0.06); border: 1px solid rgba(56,189,248,0.25);
+  }
+  .sig-item .sig { color: var(--text); word-break: break-word; line-height: 1.45; }
+  .sig-item .meta { color: var(--muted); font-size: 9px; margin-top: 4px; }
+  .sig-item.pending { border-color: rgba(251,191,36,0.4); }
+  .pulse-line { color: var(--accent); animation: blink 1.2s infinite; }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+  /* Node detail drawer */
+  .drawer {
+    position: fixed; top: 0; right: 0; height: 100%; width: 340px; z-index: 100;
+    background: rgba(4, 12, 9, 0.96); border-left: 1px solid var(--accent);
+    box-shadow: -10px 0 40px rgba(0,0,0,0.6);
+    transform: translateX(105%); transition: transform 0.22s ease;
+    padding: 20px; overflow-y: auto;
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer .close { position: absolute; top: 14px; right: 16px; background: none; border: 1px solid var(--border);
+    color: var(--muted); font-size: 12px; width: 26px; height: 26px; border-radius: 4px; cursor: pointer; }
+  .drawer .close:hover { color: var(--bad); border-color: var(--bad); }
+  .drawer h2 { font-size: 12px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; padding-right: 30px; }
+  .drawer .path { font-size: 12px; color: var(--text); word-break: break-all; line-height: 1.5; margin-bottom: 16px;
+    border-left: 3px solid var(--accent); padding-left: 10px; }
+  .drawer .kv { display: flex; justify-content: space-between; font-size: 11px; padding: 7px 0;
+    border-bottom: 1px solid rgba(13,56,41,0.5); color: var(--muted); }
+  .drawer .kv b { color: var(--text); font-weight: 600; text-align: right; }
+  .drawer .desc { font-size: 11px; color: var(--muted); line-height: 1.6; margin-top: 12px; }
+
+  footer { padding: 8px 22px 16px; font-size: 9px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+  .btn {
+    background: transparent; border: 1px solid var(--border); color: var(--accent);
+    font-family: inherit; font-size: 10px; padding: 6px 12px; border-radius: 4px; cursor: pointer; letter-spacing: 1px;
+  }
+  .btn:hover { border-color: var(--accent); box-shadow: 0 0 8px var(--glow); }
+  .btn.active { background: rgba(0,255,136,0.12); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">◈</div>
+    <div>
+      <h1>ARK-NEXUS // EMERIS <span class="phase-tag" id="phaseTag" style="vertical-align:2px">…</span></h1>
+      <span>Autonomous Recursive Kernel · Command Deck v2</span>
+    </div>
+  </div>
+  <div class="hud-metrics">
+    <div><span class="live-dot"></span>LIVE <span id="syncState" class="pulse-line" style="font-size:9px">synced</span></div>
+    <div>CYCLE <b id="cycleVal">–</b></div>
+    <div>GEN <b id="genVal">–</b></div>
+    <div>GATES <b id="gateVal">–</b></div>
+    <div>DRIFT <b id="driftVal" style="color:var(--accent)">–</b></div>
+    <div>FPS <b id="fpsVal" style="color:var(--sky)">60</b></div>
+    <button class="btn" id="refreshBtn">REFRESH</button>
+    <button class="btn" id="feedPauseBtn" title="Pause signal feed">PAUSE FEED</button>
+  </div>
+</header>
+
+<!-- HERO: ORB + INSPECTOR -->
+<div class="hero">
+  <div id="orbWrap">
+    <canvas id="orbCanvas"></canvas>
+    <div class="orb-overlay">
+      <h2>◈ EMERIS Neural Orb — 3D Memory Palace</h2>
+      <div class="sub" id="orbSub">hydrating cortex…</div>
+    </div>
+    <div class="controls-hint">[DRAG] rotate · [SCROLL] zoom · [CLICK NODE] inspect · [G] garden sync</div>
+    <div class="legend" id="orbLegend"></div>
+  </div>
+
+  <aside class="inspector">
+    <div class="inspector-header">
+      <span>ARK NODE INDEX</span>
+      <small id="inspCount">0 nodes</small>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="nodeSearch" class="search-input" placeholder="Filter nodes by path / kind…" />
+      <span class="search-kbd">/</span>
+    </div>
+    <div class="node-list" id="nodeList"></div>
+  </aside>
+</div>
+
+<!-- CODE GARDEN -->
+<div class="garden-wrap">
+  <div class="garden-head">
+    <h2>🌱 CODE GARDEN</h2>
+    <p>height ∝ bytes · crown = kind · ✿ = 2026 activity · click a stalk to inspect</p>
+  </div>
+  <canvas id="gardenCanvas"></canvas>
+</div>
+
+<!-- TELEMETRY -->
+<div class="tele-grid">
+  <div class="card">
+    <h3>Vessel</h3>
+    <div class="big" id="genBig">–</div>
+    <div class="row"><span>WEST debt</span><b id="westVal">–</b></div>
+    <div class="row"><span>Updated</span><b id="vessUpd">–</b></div>
+    <canvas class="drift-chart" id="driftChart"></canvas>
+    <div class="row"><span>threshold 0.15</span><b id="driftFlag">–</b></div>
+  </div>
+
+  <div class="card">
+    <h3>Triad DNA</h3>
+    <div class="big" id="triadCycle">–</div>
+    <div class="row"><span>Phase</span><b id="triadPhase">–</b></div>
+    <div class="row"><span>Ring</span><b id="triadRing">–</b></div>
+    <div class="row"><span>Drift recovery</span><b id="triadRecovery">–</b></div>
+    <div class="meter"><div id="recoveryMeter" style="width:0%"></div></div>
+    <div class="row"><span>Last deposits</span><b id="triadDeposits">–</b></div>
+    <div class="row"><span>Donor injects</span><b id="triadDonor">–</b></div>
+  </div>
+
+  <div class="card">
+    <h3>Verify Gates</h3>
+    <div class="big" id="gateBig">–</div>
+    <div class="meter"><div id="gateMeter" style="width:0%"></div></div>
+    <div class="row"><span>Failures</span><b id="gateFail">–</b></div>
+    <div class="row"><span>Measured</span><b id="gateTime">–</b></div>
+    <div class="chips" id="osChips"></div>
+  </div>
+
+  <div class="card">
+    <h3>Goals</h3>
+    <div class="big" id="goalBig">–</div>
+    <div class="chips" id="goalChips"></div>
+    <h3 style="margin-top:12px">Spawn Readiness</h3>
+    <div class="chips" id="spawnChips"></div>
+    <div class="row" style="margin-top:6px"><span>Clean streak</span><b id="spawnStreak">–</b></div>
+  </div>
+
+  <div class="card">
+    <h3>Daemons &amp; Census</h3>
+    <div class="big" id="dmnBig">–</div>
+    <div class="row"><span>Verdict</span><b id="dmnVerdict">–</b></div>
+    <div class="chips" id="dmnChips"></div>
+    <div class="chips" id="kindChips" style="margin-top:8px"></div>
+    <div class="row" style="margin-top:6px"><span>Total nodes</span><b id="nodeTotal">–</b></div>
+  </div>
+
+  <!-- LINGUA SIGNAL FEED (wide) -->
+  <div class="card feed-card">
+    <h3><span class="pulse-line">▮▮</span> LINGUA PRIMA SIGNAL BUS</h3>
+    <div class="feed-wrap">
+      <div class="feed-col">
+        <h4>Event stream · live bus</h4>
+        <div class="feed-list" id="feedList"></div>
+      </div>
+      <div class="feed-col">
+        <h4>Inbox packets · latest signals</h4>
+        <div id="inboxList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NODE DETAIL DRAWER -->
+<div class="drawer" id="drawer">
+  <button class="close" id="drawerClose" aria-label="Close">✕</button>
+  <h2 id="drawerKind">NODE DETAIL</h2>
+  <div class="path" id="drawerPath">–</div>
+  <div class="kv"><span>Kind</span><b id="drawerKindV">–</b></div>
+  <div class="kv"><span>Size</span><b id="drawerSize">–</b></div>
+  <div class="kv"><span>Modified</span><b id="drawerMtime">–</b></div>
+  <div class="kv"><span>Orb node</span><b id="drawerOrb">–</b></div>
+  <div class="desc" id="drawerDesc"></div>
+</div>
+
+<footer>
+  <span id="footGen">ARK-NEXUS v2 snapshot</span>
+  <span>EMERALD // adaptive 60/10 FPS // 30s auto-sync when served</span>
+</footer>
+
+<script>
+window.NEXUS_DATA = {"generated": "2026-08-25T11:12:13Z", "workspace": "ark", "vessel": {"generation": 6, "drift_history": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "west_debt": 0.0, "updated": "2026-08-23T00:00:00+00:00"}, "verify": {"pass": 17, "fail": [], "total": 17, "measured_at": "2026-08-25T21:02:53"}, "os_ready": true, "os_stages": {"1 BOOT": true, "2 KERNEL": true, "3 FS": true, "4 SYSCALLS": true, "5 DAEMONS": true, "6 SHELL": true, "7 MEM": true}, "spawn": {"spawn_eligible": false, "clean_streak": 3, "max_streak": 9, "total_cycles": 47, "gate_maturity": false, "closure": true, "dict_stability": false, "ledger_discipline": false, "lp_unknown_events": 3, "stale_events": 2}, "goals": {"total": 25, "by_tier": {"tier_0_apex": 9, "tier_1_active": 16}}, "daemons": {"total": 2, "verifiable": 2, "live": 0, "verdict": "PASS_ON_EVIDENCE", "list": [{"name": "ark-upgrade-engine-hourly", "schedule_label": "hourly", "cron_expr": "0 * * * *", "verifiable": true}, {"name": "ark-upgrade-engine-daily", "schedule_label": "daily 05:00", "cron_expr": "0 5 * * *", "verifiable": true}]}, "nodes": {"total": 234, "by_kind": {"test": 16, "runtime": 119, "skill": 35, "directive": 4, "language": 4, "goal": 11, "soul": 4, "asset": 41}, "sample": [{"path": "ARK-STATE/daemons_cron_manifest.json", "kind": "runtime", "size": 121908, "mtime": "2026-08-25"}, {"path": "ARK-DATA/edge_tuning_log.json", "kind": "runtime", "size": 54139, "mtime": "2026-08-23"}, {"path": "TRIAD_INDEX.json", "kind": "asset", "size": 50181, "mtime": "2026-08-25"}, {"path": "ARK-DATA/feedback.json", "kind": "runtime", "size": 37029, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_coordination_layer.py", "kind": "runtime", "size": 31452, "mtime": "2026-08-23"}, {"path": "VERIFICATION_LOG.md", "kind": "asset", "size": 28858, "mtime": "2026-08-25"}, {"path": "ARK-RUNTIME/ark_skill_edge_tuner.py", "kind": "skill", "size": 23489, "mtime": "2026-08-20"}, {"path": "ARK-SKILLS/tier_1_active/hermes_verify_ledger_stress.py", "kind": "skill", "size": 21946, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_sandbox.py", "kind": "runtime", "size": 21641, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_skill_token_ledger.py", "kind": "skill", "size": 20935, "mtime": "2026-08-20"}, {"path": "ARK-RUNTIME/ark_redqueen_core.py", "kind": "runtime", "size": 20165, "mtime": "2026-08-20"}, {"path": "ARK-RUNTIME/ark_neurocore_bridge.py", "kind": "runtime", "size": 19042, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_edge_optimizer.py", "kind": "runtime", "size": 16982, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_upgrade_engine.py", "kind": "runtime", "size": 16913, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_security_scanner.py", "kind": "runtime", "size": 16783, "mtime": "2026-08-20"}, {"path": "tests/test_neurocore_bridge.py", "kind": "test", "size": 14728, "mtime": "2026-08-22"}, {"path": "ARK-DATA/upgrade_log.json", "kind": "runtime", "size": 13575, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_cost_ledger.py", "kind": "runtime", "size": 13294, "mtime": "2026-08-23"}, {"path": "tests/test_coordination_layer.py", "kind": "test", "size": 13094, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_fracture.py", "kind": "runtime", "size": 12842, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_skill_curation_engine.py", "kind": "skill", "size": 12220, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_vessel.py", "kind": "runtime", "size": 11633, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_skill_health_probe.py", "kind": "skill", "size": 11171, "mtime": "2026-08-20"}, {"path": "ARK-RUNTIME/hermes_verify_ledger_concurrency.py", "kind": "test", "size": 11156, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_forge.py", "kind": "runtime", "size": 11154, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_retaliation_engine.py", "kind": "runtime", "size": 11052, "mtime": "2026-08-22"}, {"path": "tests/test_harness.py", "kind": "test", "size": 10538, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_dashboard_server.py", "kind": "runtime", "size": 10185, "mtime": "2026-08-22"}, {"path": "shell.py", "kind": "asset", "size": 9277, "mtime": "2026-08-23"}, {"path": "tests/test_skill_edge_tuner.py", "kind": "skill", "size": 8903, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/tier_1_active/hermes_verify_genesis_batch.py", "kind": "skill", "size": 8813, "mtime": "2026-08-23"}, {"path": "ARK-SKILLS/tier_1_active/redqueen_core.py", "kind": "skill", "size": 8530, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_state_layer.py", "kind": "runtime", "size": 8373, "mtime": "2026-08-23"}, {"path": "VISION.md", "kind": "asset", "size": 8339, "mtime": "2026-08-22"}, {"path": "tests/test_skill_token_ledger.py", "kind": "skill", "size": 8151, "mtime": "2026-08-22"}, {"path": "tests/test_skill_curation_engine.py", "kind": "skill", "size": 8137, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_goal_verifier.py", "kind": "goal", "size": 7959, "mtime": "2026-08-23"}, {"path": "ARK-OBJECTIVES/TRIAD-COEVOLUTION.md", "kind": "goal", "size": 7870, "mtime": "2026-08-23"}, {"path": "tests/test_skill_health_probe.py", "kind": "skill", "size": 7801, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_state_memory_manager.py", "kind": "runtime", "size": 7649, "mtime": "2026-08-20"}, {"path": "ARK-RUNTIME/ark_archive.py", "kind": "runtime", "size": 7613, "mtime": "2026-08-20"}, {"path": "syscalls.py", "kind": "asset", "size": 7540, "mtime": "2026-08-25"}, {"path": "tests/test_goal_verifier.py", "kind": "test", "size": 7354, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_fuse.py", "kind": "runtime", "size": 7340, "mtime": "2026-08-22"}, {"path": "tests/test_curation_mutations.py", "kind": "test", "size": 7276, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_autocommit.py", "kind": "runtime", "size": 7086, "mtime": "2026-08-23"}, {"path": "ARK-SKILLS/tier_1_active/hermes_verify_state_memory_manager.py", "kind": "skill", "size": 7072, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_feedback_loop.py", "kind": "runtime", "size": 7049, "mtime": "2026-08-22"}, {"path": "tests/test_redqueen_core.py", "kind": "test", "size": 7037, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/tier_1_active/hermes_verify_daemons_crons.py", "kind": "skill", "size": 7033, "mtime": "2026-08-25"}, {"path": "docs/papers/MECHANISMS.md", "kind": "asset", "size": 6642, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/ark_auto_debugger.py", "kind": "runtime", "size": 6344, "mtime": "2026-08-22"}, {"path": "BOOTSTRAP.md", "kind": "asset", "size": 6212, "mtime": "2026-08-25"}, {"path": "ARK-RUNTIME/ark_field.py", "kind": "runtime", "size": 6139, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_provenance_verifier.py", "kind": "runtime", "size": 6116, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/hermes_verify_state_recovery.py", "kind": "test", "size": 6059, "mtime": "2026-08-23"}, {"path": "tests/test_upgrade_engine.py", "kind": "test", "size": 5532, "mtime": "2026-08-22"}, {"path": "ARK-OBJECTIVES/GOALS/GOALS.md", "kind": "goal", "size": 5489, "mtime": "2026-08-25"}, {"path": "ARK-OBJECTIVES/ROADMAPS/COMPARISON.md", "kind": "goal", "size": 5251, "mtime": "2026-08-22"}, {"path": "tests/test_state_memory_manager.py", "kind": "test", "size": 5125, "mtime": "2026-08-22"}, {"path": "ARK-SOUL/SOUL.md", "kind": "soul", "size": 5112, "mtime": "2026-08-23"}, {"path": "ARK-SKILLS/tier_1_active/hermes_verify_bus_atomicity.py", "kind": "skill", "size": 5096, "mtime": "2026-08-23"}, {"path": "COLLAB.md", "kind": "asset", "size": 5023, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_replication_engine.py", "kind": "runtime", "size": 4992, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/tier_1_active/hermes_verify_dgm_h.py", "kind": "skill", "size": 4983, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/tier_0_apex/skill_health_probe.py", "kind": "skill", "size": 4679, "mtime": "2026-08-22"}, {"path": "hermes_verify_ark_t1_coverage.py", "kind": "test", "size": 4666, "mtime": "2026-08-25"}, {"path": "ARK-SKILLS/tier_0_apex/skill_edge_tuner.py", "kind": "skill", "size": 4653, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/tier_1_active/hermes_verify_s3_overflow.py", "kind": "skill", "size": 4556, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_self_healing.py", "kind": "runtime", "size": 4378, "mtime": "2026-08-22"}, {"path": "ARK-DIRECTIVES/EVOLUTION-DIRECTIVE/EVOLUTION.md", "kind": "directive", "size": 4106, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/tier_1_active/hermes_verify_state_roundtrip.py", "kind": "skill", "size": 3999, "mtime": "2026-08-23"}, {"path": "ARK-SKILLS/tier_1_active/hermes_verify_runtime_coverage.py", "kind": "skill", "size": 3979, "mtime": "2026-08-23"}, {"path": "NOTES.md", "kind": "asset", "size": 3911, "mtime": "2026-08-25"}, {"path": "ARK-RUNTIME/hermes_verify_omnicore_concurrency.py", "kind": "test", "size": 3718, "mtime": "2026-08-23"}, {"path": "ARK-SKILLS/tier_0_apex/skill_token_ledger.py", "kind": "skill", "size": 3649, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/tier_1_active/hermes_verify_ledger_recovery.py", "kind": "skill", "size": 3600, "mtime": "2026-08-23"}, {"path": "kernel.py", "kind": "asset", "size": 3598, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/state/goals.json", "kind": "goal", "size": 3533, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/hermes_verify_omnicore_nan_poison.py", "kind": "test", "size": 3465, "mtime": "2026-08-23"}, {"path": "README.md", "kind": "asset", "size": 3203, "mtime": "2026-08-23"}, {"path": "ARK-SKILLS/SKILL-ARCHITECTURE.md", "kind": "skill", "size": 3151, "mtime": "2026-08-22"}, {"path": "ARK-RUNTIME/hermes_verify_ark_cost_nan.py", "kind": "test", "size": 3086, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/hermes_verify_ark_cost_recovery.py", "kind": "test", "size": 3054, "mtime": "2026-08-23"}, {"path": "docs/papers/MECHANISMS-ADDENDUM.md", "kind": "asset", "size": 3014, "mtime": "2026-08-22"}, {"path": "ARK-LANGUAGE/LEXICON.md", "kind": "language", "size": 2949, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/tier_0_apex/state_memory_manager.py", "kind": "skill", "size": 2919, "mtime": "2026-08-22"}, {"path": "ARK-DIRECTIVES/UPGRADE-DIRECTIVE/UPGRADE.md", "kind": "directive", "size": 2695, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/tier_1_active/ledger_stress_report.json", "kind": "skill", "size": 2553, "mtime": "2026-08-23"}, {"path": "ARK-STATE/SPAWN_ELIGIBILITY.json", "kind": "runtime", "size": 2522, "mtime": "2026-08-23"}, {"path": "ARK-STATE/daemons_cron_schedule.json", "kind": "runtime", "size": 2227, "mtime": "2026-08-25"}, {"path": "ARK-DIRECTIVES/MEMORY-DIRECTIVE/MEMORY.md", "kind": "directive", "size": 2020, "mtime": "2026-08-22"}, {"path": "ARK-OBJECTIVES/ROADMAPS/ROADMAP.md", "kind": "goal", "size": 2010, "mtime": "2026-08-22"}, {"path": "LINGUA.md", "kind": "language", "size": 1960, "mtime": "2026-08-23"}, {"path": "ARK-DIRECTIVES/REPLICATION-DIRECTIVE/REPLICATION.md", "kind": "directive", "size": 1880, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/CURATION-LEDGER.md", "kind": "skill", "size": 1797, "mtime": "2026-08-22"}, {"path": "ARK-LANGUAGE/GRAMMAR.md", "kind": "language", "size": 1662, "mtime": "2026-08-22"}, {"path": "ARK-LANGUAGE/COMPRESSION.md", "kind": "language", "size": 1619, "mtime": "2026-08-22"}, {"path": "ARK-DATA/population.json", "kind": "runtime", "size": 1555, "mtime": "2026-08-23"}, {"path": "ARK-OBJECTIVES/NORTH-STAR/NORTH.md", "kind": "goal", "size": 1539, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/ark_jsonl.py", "kind": "runtime", "size": 1490, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/ARK-DATA/genesis_verification.json", "kind": "skill", "size": 1439, "mtime": "2026-08-20"}, {"path": "ARK-DATA/genesis_verification.json", "kind": "runtime", "size": 1402, "mtime": "2026-08-25"}, {"path": "ARK-SKILLS/TIER-INDEX.md", "kind": "skill", "size": 1382, "mtime": "2026-08-22"}, {"path": "ARK-SOUL/ARK-PERSONALITY/personality.md", "kind": "soul", "size": 1295, "mtime": "2026-08-23"}, {"path": "ARK-RUNTIME/README.md", "kind": "runtime", "size": 1169, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/tier_0_apex/state_memory_manager.md", "kind": "skill", "size": 1156, "mtime": "2026-08-22"}, {"path": "ARK-OBJECTIVES/SOUTH-STAR/SOUTH.md", "kind": "goal", "size": 1126, "mtime": "2026-08-22"}, {"path": "ARK-OBJECTIVES/WEST-STAR/WEST.md", "kind": "goal", "size": 1099, "mtime": "2026-08-22"}, {"path": "ARK-OBJECTIVES/EAST-STAR/EAST.md", "kind": "goal", "size": 1022, "mtime": "2026-08-22"}, {"path": "ARK-SKILLS/NOTES.md", "kind": "skill", "size": 1000, "mtime": "2026-08-22"}, {"path": "ARK-SOUL/ARK-IDENTITY/identity.md", "kind": "soul", "size": 975, "mtime": "2026-08-23"}, {"path": "ARK-DATA/evolution_log.json", "kind": "runtime", "size": 870, "mtime": "2026-08-23"}, {"path": "ARK-SKILLS/REPLICATION-LEDGER.md", "kind": "skill", "size": 840, "mtime": "2026-08-22"}, {"path": "ARK-SOUL/ARK-MEMORIES/memories.md", "kind": "soul", "size": 814, "mtime": "2026-08-20"}, {"path": "ARK-DATA/state_memory_verification.json", "kind": "runtime", "size": 743, "mtime": "2026-08-25"}, {"path": "ARK-SKILLS/ARK-DATA/state_memory_verification.json", "kind": "skill", "size": 743, "mtime": "2026-08-20"}, {"path": "PRIORITY_2_SINGLE/NOTES.md", "kind": "asset", "size": 716, "mtime": "2026-08-23"}, {"path": "ARK-STATE/process_table.json", "kind": "runtime", "size": 688, "mtime": "2026-08-23"}, {"path": "dna_manifest.json", "kind": "asset", "size": 683, "mtime": "2026-08-25"}]}, "triad": {"cycle": 48, "phase": "CROSS-REVERSE", "ring": "reverse", "drift_recovery_remaining": 1, "donor_accumulator": 0.05, "last_deposits": 3, "last_donor_injects": 1, "spawn_readiness": false}, "signals": {"feed": [{"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "11:03:30", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "11:03:30", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "11:03:30", "text": "boot start"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "11:03:03", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "11:03:03", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "11:03:02", "text": "boot start"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "11:02:01", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "11:02:01", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "11:02:01", "text": "boot start"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "11:00:52", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "11:00:52", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "11:00:52", "text": "boot start"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "11:00:31", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "11:00:31", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "11:00:31", "text": "boot start"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:26:09", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:26:09", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:26:09", "text": "boot start"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:25:49", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:25:49", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:25:49", "text": "boot start"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:24:18", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:24:18", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:24:18", "text": "boot start"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:23:59", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:23:59", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:23:59", "text": "boot start"}, {"ev": "sent", "kind": "packet", "agent": "?", "ts": "09:23:38", "text": "sent packet \u00b7 EXECUTE_GOAL"}, {"ev": "sent", "kind": "packet", "agent": "?", "ts": "09:23:27", "text": "sent packet \u00b7 EXECUTE_GOAL"}, {"ev": "sent", "kind": "packet", "agent": "?", "ts": "09:22:23", "text": "sent packet \u00b7 TRIAD_SYNC_SUMMARY"}, {"ev": "acked", "kind": "packet", "agent": "?", "ts": "09:22:13", "text": "acked packet \u00b7 TRIAD_SYNC_SUMMARY"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:19:44", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:19:44", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:19:44", "text": "boot start"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:19:04", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:19:04", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:19:04", "text": "boot start"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:18:05", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:18:05", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:18:05", "text": "boot start"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:17:04", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:17:04", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:17:04", "text": "boot start"}, {"ev": "sent", "kind": "packet", "agent": "?", "ts": "09:16:39", "text": "sent packet \u00b7 STATUS"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:15:30", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:15:30", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:15:30", "text": "boot start"}, {"ev": "acked", "kind": "packet", "agent": "?", "ts": "09:14:57", "text": "acked packet \u00b7 STATUS"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:14:53", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:14:53", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:14:53", "text": "boot start"}, {"ev": "acked", "kind": "packet", "agent": "?", "ts": "09:14:40", "text": "acked packet \u00b7 TRIAD_SYNC_CORRECTION"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:14:31", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:14:31", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:14:31", "text": "boot start"}, {"ev": "acked", "kind": "packet", "agent": "?", "ts": "09:14:24", "text": "acked packet \u00b7 TRIAD_SYNC"}, {"ev": "acked", "kind": "packet", "agent": "?", "ts": "09:14:10", "text": "acked packet \u00b7 TRIAD_REPORT"}, {"ev": "LP_BOOT_READY", "kind": "boot", "agent": "omniprime", "ts": "09:14:02", "text": "boot ready \u00b7 os_ready True"}, {"ev": "LP_CHAIN", "kind": "chain", "agent": "omniprime", "ts": "09:14:02", "text": "chain a\u2192b\u2192t \u00b7 ratio 0.179"}, {"ev": "LP_BOOT_START", "kind": "boot", "agent": "omniprime", "ts": "09:14:01", "text": "boot start"}], "inbox": [{"from": "auroral", "type": "STATUS", "ts": "09:16:39", "signal": "CYCLE_46 [AU->ARK] PH=CROSS-REVERSE RING=REV INBOX6->EXEC_CLOSE 3/3 EVOLVE c46 BRAIN L39.3/R34.2/P18.9/D7.5 D0 driftWARN", "status": "pending"}, {"from": "auroral", "type": "STATUS", "ts": "06:09:29", "signal": "CYCLE_31 [AU->ARK] PH=CROSS-REVERSE RING=REV ACK 2pkt->EVOLVE c31 BRAIN L51.6/R24.8/P16.1/D7.5 D0 driftWARN", "status": "acked"}]}};
+let D = window.NEXUS_DATA || {};
+const KIND_COLORS = {
+  soul: '#00ff88', runtime: '#38bdf8', skill: '#10b981', test: '#fbbf24',
+  goal: '#a78bfa', language: '#f472b6', directive: '#fb923c', asset: '#94a3b8'
+};
+const KIND_ORDER = ['soul','runtime','skill','goal','test','language','directive','asset'];
+const $ = id => document.getElementById(id);
+
+/* ═══════════ TELEMETRY ═══════════ */
+function renderTelemetry() {
+  const v = D.vessel || {}, g = D.verify || {}, sp = D.spawn || {}, dm = D.daemons || {}, td = D.triad || {};
+  $('genVal').textContent = v.generation ?? '–';
+  $('genBig').innerHTML = (v.generation ?? '–') + ' <small>generation</small>';
+  $('westVal').textContent = (v.west_debt ?? 0).toFixed(2);
+  $('vessUpd').textContent = (v.updated || '–').slice(0, 16);
+  const dh = v.drift_history || [];
+  const lastDrift = dh.length ? dh[dh.length-1] : 0;
+  $('driftVal').textContent = lastDrift.toFixed(2);
+  $('driftFlag').textContent = lastDrift >= 0.15 ? '⚠ DRIFTING' : 'CLEAN';
+  $('driftFlag').style.color = lastDrift >= 0.15 ? 'var(--bad)' : 'var(--accent)';
+  drawDriftChart(dh);
+
+  $('gateVal').textContent = `${g.pass ?? 0}/${g.total ?? 0}`;
+  $('gateBig').innerHTML = `${g.pass ?? 0}/${g.total ?? 0} <small>passing</small>`;
+  $('gateMeter').style.width = g.total ? (g.pass/g.total*100) + '%' : '0%';
+  $('gateFail').textContent = (g.fail && g.fail.length) ? g.fail.join(', ') : 'none';
+  $('gateTime').textContent = (g.measured_at || '–').slice(0,16);
+
+  const os = D.os_stages || {};
+  $('osChips').innerHTML = Object.entries(os).map(([k,vv]) =>
+    `<span class="chip ${vv?'ok':'bad'}">${k.replace(/^\d+ /,'')} ${vv?'●':'○'}</span>`).join('');
+
+  const gt = (D.goals || {}).by_tier || {};
+  $('goalBig').innerHTML = (D.goals||{}).total + ' <small>implemented</small>';
+  $('goalChips').innerHTML = Object.entries(gt).map(([k,n]) =>
+    `<span class="chip ok">${k} × ${n}</span>`).join('');
+
+  const gates = ['gate_maturity','dict_stability','ledger_discipline'];
+  $('spawnChips').innerHTML = gates.map(k =>
+    `<span class="chip ${sp[k]?'ok':'bad'}">${k.replace(/_/g,' ')} ${sp[k]?'●':'○'}</span>`).join('') +
+    `<span class="chip ${sp.spawn_eligible?'ok':'warn'}">spawn ${sp.spawn_eligible?'ELIGIBLE':'INELIGIBLE'}</span>`;
+  $('spawnStreak').textContent = `${sp.clean_streak} (max ${sp.max_streak}) · lp ${sp.lp_unknown_events} · stale ${sp.stale_events}`;
+
+  $('dmnBig').innerHTML = dm.total + ' <small>daemons</small>';
+  $('dmnVerdict').textContent = dm.verdict || '–';
+  $('dmnChips').innerHTML = (dm.list||[]).map(c =>
+    `<span class="chip ${c.verifiable?'ok':'warn'}">${c.name}</span>`).join('');
+
+  const bk = (D.nodes||{}).by_kind || {};
+  $('kindChips').innerHTML = Object.entries(bk).sort((a,b)=>b[1]-a[1]).map(([k,n]) =>
+    `<span class="chip" style="color:${KIND_COLORS[k]||'#94a3b8'};border-color:${KIND_COLORS[k]||'#94a3b8'}55">${k} × ${n}</span>`).join('');
+  $('nodeTotal').textContent = (D.nodes||{}).total;
+  $('inspCount').textContent = (D.nodes||{}).sample ? D.nodes.sample.length + ' of ' + D.nodes.total : '0 nodes';
+  $('orbSub').textContent = `${D.nodes?.total||0} nodes · ${D.nodes?.by_kind?.runtime||0} runtime · generated ${(D.generated||'–').slice(0,16)}`;
+  $('footGen').textContent = `ARK-NEXUS v2 snapshot · generated ${(D.generated||'–')}`;
+
+  /* Triad */
+  $('cycleVal').textContent = td.cycle ?? '–';
+  $('phaseTag').textContent = td.phase || '…';
+  $('triadCycle').innerHTML = (td.cycle ?? '–') + ' <small>dna cycle</small>';
+  $('triadPhase').textContent = td.phase || '–';
+  $('triadRing').textContent = td.ring || '–';
+  const rec = td.drift_recovery_remaining ?? 0;
+  $('triadRecovery').textContent = rec + ' cycles';
+  $('recoveryMeter').style.width = Math.min(100, rec * 20) + '%';
+  $('triadDeposits').textContent = td.last_deposits ?? '–';
+  $('triadDonor').textContent = td.last_donor_injects ?? '–';
+}
+
+/* Drift line chart */
+function drawDriftChart(dh) {
+  const c = $('driftChart');
+  const r = c.parentElement.getBoundingClientRect();
+  c.width = r.width * devicePixelRatio; c.height = 60 * devicePixelRatio;
+  c.style.width = r.width + 'px'; c.style.height = '60px';
+  const x = c.getContext('2d');
+  x.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  x.clearRect(0, 0, r.width, 60);
+  const w = r.width, h = 60, pad = 4;
+  const maxV = 0.2;
+  // threshold line
+  x.strokeStyle = 'rgba(248,113,113,0.5)'; x.setLineDash([4,3]); x.lineWidth = 1;
+  x.beginPath(); x.moveTo(pad, h - pad - (0.15/maxV)*(h-2*pad)); x.lineTo(w-pad, h - pad - (0.15/maxV)*(h-2*pad)); x.stroke();
+  x.setLineDash([]);
+  if (!dh.length) return;
+  const step = (w - 2*pad) / Math.max(1, dh.length - 1);
+  x.strokeStyle = '#00ff88'; x.lineWidth = 1.6; x.shadowColor = '#00ff88'; x.shadowBlur = 6;
+  x.beginPath();
+  dh.forEach((val, i) => {
+    const px = pad + i * step, py = h - pad - Math.min(1, val/maxV) * (h - 2*pad);
+    i ? x.lineTo(px, py) : x.moveTo(px, py);
+  });
+  x.stroke(); x.shadowBlur = 0;
+  // fill
+  const g = x.createLinearGradient(0, 0, 0, h);
+  g.addColorStop(0, 'rgba(0,255,136,0.18)'); g.addColorStop(1, 'rgba(0,255,136,0)');
+  x.fillStyle = g; x.lineTo(pad + (dh.length-1)*step, h-pad); x.lineTo(pad, h-pad); x.closePath(); x.fill();
+}
+
+/* ═══════════ SIGNAL FEED ═══════════ */
+let feedPaused = false;
+const KIND_LABEL = { token:'TOKEN', chain:'CHAIN', boot:'BOOT', packet:'PKT', commit:'COMMIT', event:'EVENT' };
+function renderFeed() {
+  const feed = (D.signals?.feed || []).slice(0, 42);
+  const list = $('feedList');
+  list.innerHTML = '';
+  feed.forEach(e => {
+    const el = document.createElement('div');
+    el.className = `feed-item ${e.kind}`;
+    el.innerHTML = `<span class="t">${e.ts}</span><span class="a">${e.agent||'?'}</span><span class="x">${KIND_LABEL[e.kind]||'EVENT'} · ${e.text}</span>`;
+    list.appendChild(el);
+  });
+  const ib = $('inboxList');
+  ib.innerHTML = '';
+  (D.signals?.inbox || []).forEach(s => {
+    const el = document.createElement('div');
+    el.className = `sig-item ${s.status}`;
+    el.innerHTML = `<div class="sig">${s.signal}</div>
+      <div class="meta">${s.from} → ark · ${s.type} · ${s.ts} · ${s.status}</div>`;
+    ib.appendChild(el);
+  });
+}
+$('feedPauseBtn').addEventListener('click', () => {
+  feedPaused = !feedPaused;
+  $('feedPauseBtn').textContent = feedPaused ? 'RESUME FEED' : 'PAUSE FEED';
+  $('feedPauseBtn').classList.toggle('active', feedPaused);
+  if (!feedPaused) renderFeed();
+});
+
+/* ═══════════ ORB — 3D MEMORY PALACE ═══════════ */
+const canvas = $('orbCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resizeOrb() {
+  const r = canvas.parentElement.getBoundingClientRect();
+  W = canvas.width = r.width * devicePixelRatio;
+  H = canvas.height = r.height * devicePixelRatio;
+  canvas.style.width = r.width + 'px'; canvas.style.height = r.height + 'px';
+}
+window.addEventListener('resize', resizeOrb);
+resizeOrb();
+
+const CORE_NODES = [
+  { title: 'ARK-SOUL/SOUL.md', kind: 'soul', desc: 'Immutable constitution — 8 invariants', size: 4096 },
+  { title: 'ARK-RUNTIME/ark_forge.py', kind: 'runtime', desc: 'Genesis engine — mutates skill candidates', size: 8192 },
+  { title: 'ARK-RUNTIME/ark_fracture.py', kind: 'runtime', desc: 'Adversarial critic population', size: 6144 },
+  { title: 'ARK-RUNTIME/ark_fuse.py', kind: 'runtime', desc: '3-step hardening gate', size: 6144 },
+  { title: 'ARK-RUNTIME/ark_field.py', kind: 'runtime', desc: 'Drift observer + WEST correction', size: 5120 },
+  { title: 'ARK-RUNTIME/ark_upgrade_engine.py', kind: 'runtime', desc: 'Dual optimization', size: 5120 },
+  { title: 'LINGUA.md', kind: 'language', desc: 'Lingua Prima protocol', size: 2048 },
+  { title: 'BOOTSTRAP.md', kind: 'goal', desc: 'Zero-touch bootstrap path', size: 2048 }
+];
+
+const sample = (D.nodes?.sample || []).slice();
+const orbNodes = [];
+const used = new Set();
+function pickNode(kind) {
+  const cands = sample.filter(n => n.kind === kind && !used.has(n.path));
+  if (!cands.length) return null;
+  const pick = cands[0]; used.add(pick.path); return pick;
+}
+CORE_NODES.forEach(c => orbNodes.push(c));
+KIND_ORDER.forEach(kind => {
+  const count = kind === 'runtime' ? 10 : kind === 'skill' ? 6 : kind === 'test' ? 4 : 3;
+  for (let i = 0; i < count; i++) {
+    const n = pickNode(kind);
+    if (n) orbNodes.push({ title: n.path, kind: n.kind, desc: `${n.size} B`, size: n.size });
+  }
+});
+
+const N = orbNodes.length;
+const nodes = orbNodes.map((nd, i) => {
+  const phi = Math.acos(-1 + (2 * i) / N);
+  const theta = Math.sqrt(N * Math.PI) * phi;
+  const r = 250 + (Math.sin(i * 3) * 45);
+  const x = r * Math.cos(theta) * Math.sin(phi);
+  const y = r * Math.sin(theta) * Math.sin(phi);
+  const z = r * Math.cos(phi);
+  return {
+    ...nd, x, y, z, ox: x, oy: y, oz: z,
+    radius: 4 + Math.min(4, Math.log2((nd.size || 512) + 1) / 2.2),
+    color: KIND_COLORS[nd.kind] || '#94a3b8'
+  };
+});
+
+/* inspector */
+const listEl = $('nodeList');
+function renderList(filter) {
+  listEl.innerHTML = '';
+  const f = (filter || '').toLowerCase();
+  nodes.forEach((n, i) => {
+    if (f && !(n.title + n.kind).toLowerCase().includes(f)) return;
+    const card = document.createElement('div');
+    card.className = 'node-card';
+    card.innerHTML = `
+      <div class="node-title">${n.title}</div>
+      <div class="node-meta"><span style="color:${n.color}">${n.kind}</span><span>${(n.size||0).toLocaleString()} B</span></div>`;
+    card.onclick = () => { selectNode(i); openDetail(nodes[i]); };
+    listEl.appendChild(card);
+  });
+}
+renderList('');
+$('nodeSearch').addEventListener('input', e => renderList(e.target.value));
+
+$('orbLegend').innerHTML = KIND_ORDER.map(k =>
+  `<div class="legend-row"><span class="legend-swat" style="background:${KIND_COLORS[k]}"></span>${k}</div>`).join('');
+
+let rotX = 0.45, rotY = 0.25, zoom = 1.0, isDragging = false, lx = 0, ly = 0, hoverNode = -1;
+function selectNode(i) {
+  document.querySelectorAll('.node-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.node-card')[i]?.classList.add('active');
+}
+function focusNode(i) {
+  const n = nodes[i];
+  rotY = -Math.atan2(n.ox, n.oz); rotX = Math.atan2(n.oy, Math.hypot(n.ox, n.oz)); zoom = 1.5;
+  selectNode(i);
+}
+canvas.addEventListener('mousedown', e => { isDragging = true; lx = e.clientX; ly = e.clientY; canvas.classList.add('dragging'); bump(); });
+window.addEventListener('mousemove', e => {
+  if (isDragging) { const dx = e.clientX - lx, dy = e.clientY - ly; rotY += dx * 0.005; rotX += dy * 0.005; lx = e.clientX; ly = e.clientY; }
+  else hoverNode = pickHover(e);
+  bump();
+});
+window.addEventListener('mouseup', () => { isDragging = false; canvas.classList.remove('dragging'); });
+canvas.addEventListener('wheel', e => { e.preventDefault(); zoom = Math.max(0.4, Math.min(2.5, zoom - e.deltaY * 0.001)); bump(); }, { passive: false });
+canvas.addEventListener('click', e => { const i = pickHover(e); if (i >= 0) { focusNode(i); openDetail(nodes[i]); } });
+function pickHover(e) {
+  const r = canvas.getBoundingClientRect();
+  const px = (e.clientX - r.left), py = (e.clientY - r.top);
+  let best = -1, bd = 12;
+  projected.forEach((p, i) => {
+    if (p.z > -50) { const d = Math.hypot(p.x - px, p.y - py); if (d < bd && d < p.radius + 4) { bd = d; best = i; } }
+  });
+  return best;
+}
+let projected = [];
+
+/* ═══════════ NODE DETAIL DRAWER ═══════════ */
+function openDetail(n) {
+  $('drawerPath').textContent = n.title || '—';
+  $('drawerKind').textContent = 'NODE DETAIL · ' + (n.kind||'').toUpperCase();
+  $('drawerKind').style.color = n.color || 'var(--accent)';
+  $('drawerKindV').textContent = n.kind || '–';
+  $('drawerSize').textContent = (n.size||0).toLocaleString() + ' bytes';
+  $('drawerMtime').textContent = n.mtime || '—';
+  const inOrb = !!n.title && nodes.some(x => x.title === n.title);
+  $('drawerOrb').textContent = inOrb ? '● in orb' : '○ index only';
+  $('drawerOrb').style.color = inOrb ? 'var(--accent)' : 'var(--muted)';
+  $('drawerDesc').textContent = n.desc || `${n.kind} node · ${(n.size||0).toLocaleString()} bytes`;
+  $('drawer').classList.add('open');
+}
+$('drawerClose').addEventListener('click', () => $('drawer').classList.remove('open'));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') $('drawer').classList.remove('open');
+  if (e.key === '/') { e.preventDefault(); $('nodeSearch').focus(); }
+});
+
+/* ═══════════ CODE GARDEN ═══════════ */
+const gCanvas = $('gardenCanvas');
+const gctx = gCanvas.getContext('2d');
+function resizeGarden() {
+  const r = gCanvas.parentElement.getBoundingClientRect();
+  gCanvas.width = r.width * devicePixelRatio;
+  gCanvas.height = 280 * devicePixelRatio;
+  gCanvas.style.width = r.width + 'px'; gCanvas.style.height = '280px';
+}
+window.addEventListener('resize', resizeGarden);
+resizeGarden();
+
+const gardenNodes = (D.nodes?.sample || []).slice(0, 90);
+function gardenLayout() {
+  const gW = gCanvas.width, gH = gCanvas.height;
+  const rows = {};
+  KIND_ORDER.forEach(k => rows[k] = gardenNodes.filter(n => n.kind === k));
+  const rowH = gH / 7;
+  const plants = [];
+  KIND_ORDER.forEach((kind, r) => {
+    const list = rows[kind] || [];
+    const cols = Math.max(1, Math.floor(gW / (46 * devicePixelRatio)));
+    list.forEach((n, i) => {
+      const col = i % cols;
+      const seg = gW / cols;
+      const x = col * seg + seg / 2 + (Math.sin(i * 12.9898) * seg * 0.18);
+      plants.push({ n, x, row: r, rowY: r * rowH + rowH * 0.72, kind });
+    });
+  });
+  return plants;
+}
+let garden = gardenLayout();
+function gardenPick(px, py) {
+  let best = null, bd = 10;
+  garden.forEach(p => {
+    const d = Math.hypot(px - p.x, py - p.rowY);
+    if (d < bd) { bd = d; best = p; }
+  });
+  return best;
+}
+gCanvas.addEventListener('mousemove', e => {
+  const r = gCanvas.getBoundingClientRect();
+  const p = gardenPick(e.clientX - r.left, e.clientY - r.top);
+  gCanvas.style.cursor = p ? 'pointer' : 'crosshair';
+});
+gCanvas.addEventListener('click', e => {
+  const r = gCanvas.getBoundingClientRect();
+  const p = gardenPick(e.clientX - r.left, e.clientY - r.top);
+  if (!p) return;
+  const idx = nodes.findIndex(n => n.title === p.n.path);
+  if (idx >= 0) focusNode(idx);
+  openDetail({ title: p.n.path, kind: p.n.kind, size: p.n.size, mtime: p.n.mtime,
+    desc: `garden node · ${p.n.kind} · ${(p.n.size||0).toLocaleString()} bytes` });
+});
+
+/* ═══════════ ADAPTIVE FPS 60/10 ═══════════ */
+let targetFPS = 60, fps = 60, frames = 0, lastTick = performance.now(), lastFrame = 0;
+let lastInteract = performance.now();
+const IDLE_MS = 25000;
+function bump() { lastInteract = performance.now(); targetFPS = 60; }
+['mousemove','mousedown','touchstart','keydown'].forEach(ev => window.addEventListener(ev, bump, { passive: true }));
+document.addEventListener('visibilitychange', () => {
+  targetFPS = document.hidden ? 10 : 60; lastInteract = performance.now();
+});
+setInterval(() => { if (!document.hidden && performance.now() - lastInteract > IDLE_MS) targetFPS = 10; }, 2000);
+
+function frame(now) {
+  const interval = 1000 / targetFPS;
+  if (now - lastFrame >= interval) {
+    lastFrame = now; frames++;
+    if (now - lastTick >= 1000) { fps = frames; frames = 0; lastTick = now; $('fpsVal').textContent = fps + (document.hidden ? ' (bg)' : ''); }
+    drawOrb(now); drawGarden(now);
+  }
+  requestAnimationFrame(frame);
+}
+
+function drawOrb(now) {
+  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  ctx.fillStyle = '#030706';
+  ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+  if (!isDragging) rotY += 0.0018;
+  const cx = canvas.clientWidth / 2, cy = canvas.clientHeight / 2;
+
+  projected = nodes.map(n => {
+    let x1 = n.ox * Math.cos(rotY) + n.oz * Math.sin(rotY);
+    let z1 = -n.ox * Math.sin(rotY) + n.oz * Math.cos(rotY);
+    let y2 = n.oy * Math.cos(rotX) - z1 * Math.sin(rotX);
+    let z2 = n.oy * Math.sin(rotX) + z1 * Math.cos(rotX);
+    const fov = 420, scale = (fov / (fov + z2 + 320)) * zoom;
+    return { x: cx + x1 * scale, y: cy + y2 * scale, z: z2, s: scale, r: n.radius * scale, c: n.color, title: n.title };
+  });
+  projected.sort((a, b) => b.z - a.z);
+
+  ctx.lineWidth = 1;
+  for (let i = 0; i < projected.length; i++) for (let j = i + 1; j < projected.length; j++) {
+    const a = projected[i], b = projected[j];
+    const dist = Math.hypot(a.x - b.x, a.y - b.y);
+    if (dist < 95 * zoom) {
+      ctx.strokeStyle = `rgba(0,255,136,${(1 - dist / (95*zoom)) * 0.28})`;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    }
+  }
+
+  const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, 190 * zoom);
+  grad.addColorStop(0, 'rgba(0,255,136,0.10)'); grad.addColorStop(0.6, 'rgba(0,255,136,0.03)'); grad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(cx, cy, 190 * zoom, 0, Math.PI * 2); ctx.fill();
+
+  projected.forEach((p, i) => {
+    if (p.s <= 0.02) return;
+    const n = nodes[i];
+    ctx.fillStyle = p.c; ctx.shadowColor = p.c; ctx.shadowBlur = (i === hoverNode ? 22 : 11) * p.s;
+    ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(1.8, p.r), 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+    if (i === hoverNode) {
+      ctx.strokeStyle = p.c; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(3, p.r + 5), 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = '#d4fced'; ctx.font = '10px JetBrains Mono, monospace';
+      ctx.fillText(n.title.slice(0, 34), p.x + 10, p.y - 8);
+    }
+  });
+}
+
+function drawGarden(now) {
+  const gw = gCanvas.clientWidth, gh = gCanvas.clientHeight, t = now / 1000;
+  gctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  gctx.fillStyle = '#04110c'; gctx.fillRect(0, 0, gw, gh);
+  const rowH = gh / 7;
+  KIND_ORDER.forEach((k, r) => {
+    gctx.fillStyle = 'rgba(13,56,41,0.35)'; gctx.fillRect(0, r * rowH, gw, 1);
+    gctx.fillStyle = 'rgba(94,145,125,0.5)'; gctx.font = '8px JetBrains Mono, monospace';
+    gctx.fillText('◈ ' + k.toUpperCase(), 10, r * rowH + 12);
+  });
+  garden.forEach(p => {
+    const sz = p.n.size || 256;
+    const hgt = Math.min(rowH * 0.82, 12 + Math.log10(sz + 1) * rowH * 0.34);
+    const baseY = p.rowY, topY = baseY - hgt;
+    const sway = Math.sin(t * 0.8 + p.x * 0.02) * 2.2;
+    const col = KIND_COLORS[p.kind] || '#94a3b8';
+    gctx.strokeStyle = col; gctx.lineWidth = 1.4; gctx.globalAlpha = 0.85;
+    gctx.beginPath(); gctx.moveTo(p.x, baseY); gctx.quadraticCurveTo(p.x + sway, (baseY + topY) / 2, p.x + sway, topY); gctx.stroke();
+    const cr = 2.2 + Math.log2(sz + 1) * 0.55;
+    gctx.globalAlpha = 1;
+    gctx.fillStyle = col; gctx.shadowColor = col; gctx.shadowBlur = 8;
+    gctx.beginPath(); gctx.arc(p.x + sway, topY - 2, Math.max(1.6, cr * 0.7), 0, Math.PI * 2); gctx.fill();
+    if (String(p.n.mtime || '').startsWith('2026-')) {
+      gctx.fillStyle = '#fbbf24'; gctx.shadowColor = '#fbbf24';
+      for (let k = 0; k < 3; k++) {
+        const a = t * 0.7 + k * 2.09;
+        gctx.beginPath(); gctx.arc(p.x + sway + Math.cos(a) * cr * 1.3, topY - 2 + Math.sin(a) * cr * 1.3, 1.1, 0, Math.PI * 2); gctx.fill();
+      }
+    }
+    gctx.shadowBlur = 0;
+    if (sz > 8000) { gctx.fillStyle = 'rgba(212,252,237,0.55)'; gctx.font = '7px JetBrains Mono, monospace'; gctx.fillText(p.n.path.slice(-16), p.x + 3, topY - 6); }
+  });
+  gctx.globalAlpha = 1;
+}
+
+/* ═══════════ AUTO-SYNC (HTTP only) ═══════════ */
+const served = location.protocol === 'http:' || location.protocol === 'https:';
+setInterval(() => {
+  if (!served) return;
+  $('syncState').textContent = 'syncing…';
+  fetch('nexus_data.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject())
+    .then(data => {
+      window.NEXUS_DATA = data; D = data;
+      renderTelemetry(); renderFeed();
+      $('syncState').textContent = 'synced';
+    }).catch(() => { $('syncState').textContent = 'offline'; });
+}, 30000);
+
+$('refreshBtn').addEventListener('click', () => {
+  if (served) { location.reload(); return; }
+  fetch('nexus_data.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject())
+    .then(data => { window.NEXUS_DATA = data; D = data; renderTelemetry(); renderFeed(); })
+    .catch(() => location.reload());
+});
+
+/* ═══════════ INIT ═══════════ */
+renderTelemetry();
+renderFeed();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

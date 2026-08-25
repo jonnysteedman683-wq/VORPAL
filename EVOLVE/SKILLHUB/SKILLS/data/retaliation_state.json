@@ -1,0 +1,17 @@
+{
+  "blacklisted_sources": [
+    "test_attacker"
+  ],
+  "blacklist_expiry": {
+    "test_attacker": 1787754173.9546578
+  },
+  "quarantined_sources": [],
+  "source_reputation": {
+    "test_attacker": 45.0
+  },
+  "offense_counts": {
+    "test_attacker|prompt_injection": 1
+  },
+  "honeypot_hits": {},
+  "saved_at": 1787667773.957648
+}

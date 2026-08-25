@@ -1,0 +1,140 @@
+{
+  "macros": {
+    "gG3\u2192t": {
+      "meaning": "generate_genesis_critical_then_test",
+      "alias": "G3",
+      "description": "Critical genesis generation followed by test",
+      "category": "semantic",
+      "token_savings": 2,
+      "pct_savings": 50.0
+    },
+    "m.M1": {
+      "meaning": "mutate_mutation_low",
+      "alias": "M",
+      "description": "Low-intensity mutation",
+      "category": "action",
+      "token_savings": 3,
+      "pct_savings": 75.0
+    },
+    "tT\u2192vV\u2192d.D": {
+      "meaning": "test_validate_debug",
+      "alias": "TVd",
+      "description": "Full verification pipeline",
+      "category": "semantic",
+      "token_savings": 5,
+      "pct_savings": 62.5
+    },
+    "s#E\u2192gG3": {
+      "meaning": "steal_route_entropy_generate_genesis_critical",
+      "alias": "S3",
+      "description": "Steal pattern, route to entropy, genesis generate",
+      "category": "semantic",
+      "token_savings": 4,
+      "pct_savings": 66.7
+    },
+    "h.H9\u2192u.U9": {
+      "meaning": "health_check_all_upgrade_all_max",
+      "alias": "H9U9",
+      "description": "Full system health check + upgrade",
+      "category": "semantic",
+      "token_savings": 2,
+      "pct_savings": 33.3
+    },
+    "gG\u2192vV": {
+      "meaning": "generate_genesis_validate",
+      "alias": "GV",
+      "description": "Genesis generate and validate",
+      "category": "semantic",
+      "token_savings": 2,
+      "pct_savings": 50.0
+    },
+    "b.B3\u2192t.": {
+      "meaning": "build_beta_critical_current",
+      "alias": "B3t",
+      "description": "Beta build with critical intensity, then current test",
+      "category": "semantic",
+      "token_savings": 2,
+      "pct_savings": 40.0
+    },
+    "r.R4\u2192h.H": {
+      "meaning": "repair_critical_health",
+      "alias": "R4h",
+      "description": "Critical repair and health check",
+      "category": "semantic",
+      "token_savings": 2,
+      "pct_savings": 40.0
+    },
+    "eE\u2192gG3\u2192t": {
+      "meaning": "evolve_generate_genesis_critical_test",
+      "alias": "EG3",
+      "description": "Full evolution cycle",
+      "category": "semantic",
+      "token_savings": 4,
+      "pct_savings": 55.6
+    },
+    "s.S9\u2192m.M\u2192t.": {
+      "meaning": "steal_stagnant_all_mutate_current_test",
+      "alias": "S9mt",
+      "description": "Steal all stagnant, mutate, current test",
+      "category": "semantic",
+      "token_savings": 4,
+      "pct_savings": 50.0
+    },
+    "\u2716S@140": {
+      "meaning": "[ERR_SYNTAX] at line 140 in thors_thorns_engine.py",
+      "alias": "ES140",
+      "description": "Common syntax error reference",
+      "category": "storage_macro",
+      "token_savings": 6,
+      "pct_savings": 83.3
+    },
+    "\u2716L@282": {
+      "meaning": "[ERR_LOGIC] at line 282 in pipeline_skills.py",
+      "alias": "EL282",
+      "description": "Common logic error reference",
+      "category": "storage_macro",
+      "token_savings": 6,
+      "pct_savings": 83.3
+    },
+    "C\u03c0\u03b5\u03b4\u2716S@": {
+      "meaning": "Error in EVOLVE SKILLHUB pyramid utilities file",
+      "alias": "EPU",
+      "description": "Utility file error pattern",
+      "category": "storage_macro",
+      "token_savings": 8,
+      "pct_savings": 87.5
+    },
+    "C\u03c0\u03b5\u03b3G": {
+      "meaning": "GOAL reference in EVOLVE GOALS file",
+      "alias": "EG",
+      "description": "Goal reference pattern",
+      "category": "storage_macro",
+      "token_savings": 7,
+      "pct_savings": 85.7
+    },
+    "C\u03a3\u03a6h": {
+      "meaning": "Test in SKILLHUB tests directory (hermes_verify_*.py)",
+      "alias": "TH",
+      "description": "Test file reference pattern",
+      "category": "storage_macro",
+      "token_savings": 8,
+      "pct_savings": 87.5
+    },
+    "\u03c4\u03b6\u03be": {
+      "meaning": "2026-T...Z (full ISO timestamp)",
+      "alias": "\u03c4\u03b6\u03be",
+      "description": "Full timestamp macro",
+      "category": "storage_macro",
+      "token_savings": 3,
+      "pct_savings": 66.7
+    },
+    "sp;si": {
+      "meaning": "[STATUS: PENDING]; [IMPLEMENTED: ...",
+      "alias": "PSI",
+      "description": "Pending then implemented transition",
+      "category": "storage_macro",
+      "token_savings": 4,
+      "pct_savings": 75.0
+    }
+  }
+}

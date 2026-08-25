@@ -1,0 +1,234 @@
+{
+  "compound_mappings": {
+    "gG": {
+      "meaning": "generate_genesis",
+      "description": "High-intensity genesis generation",
+      "category": "semantic"
+    },
+    "b.B": {
+      "meaning": "build_beta_cache",
+      "description": "Build beta cache layer",
+      "category": "semantic"
+    },
+    "tT": {
+      "meaning": "test_tier",
+      "description": "Test current tier",
+      "category": "semantic"
+    },
+    "m.M": {
+      "meaning": "mutate_mutation",
+      "description": "Trigger mutation engine",
+      "category": "semantic"
+    },
+    "d.D": {
+      "meaning": "debug_daemon",
+      "description": "Run daemon debug",
+      "category": "semantic"
+    },
+    "s.S": {
+      "meaning": "steal_stagnant",
+      "description": "Steal from stagnant tier",
+      "category": "semantic"
+    },
+    "h.H": {
+      "meaning": "health_check",
+      "description": "Run health check",
+      "category": "semantic"
+    },
+    "l.L": {
+      "meaning": "list_layers",
+      "description": "List all pyramid layers",
+      "category": "semantic"
+    },
+    "w.T": {
+      "meaning": "walk_tiers",
+      "description": "Walk through tiers",
+      "category": "semantic"
+    },
+    "r.R": {
+      "meaning": "repair",
+      "description": "Initiate repair process",
+      "category": "semantic"
+    },
+    "u.U": {
+      "meaning": "upgrade_all",
+      "description": "Upgrade all systems",
+      "category": "semantic"
+    },
+    "s#": {
+      "meaning": "steal_then_route",
+      "description": "Steal pattern and route result",
+      "category": "semantic"
+    },
+    "g!": {
+      "meaning": "generate_force",
+      "description": "Force generate new skill",
+      "category": "semantic"
+    },
+    ".t": {
+      "meaning": "test_current",
+      "description": "Test current skill",
+      "category": "semantic"
+    },
+    "~L": {
+      "meaning": "toggle_lint",
+      "description": "Toggle lint mode",
+      "category": "semantic"
+    },
+    "gG3": {
+      "meaning": "generate_genesis_critical",
+      "description": "Critical genesis generation",
+      "category": "semantic"
+    },
+    "m.M1": {
+      "meaning": "mutate_mutation_low",
+      "description": "Low-intensity mutation",
+      "category": "semantic"
+    },
+    "d.D!": {
+      "meaning": "debug_daemon_force",
+      "description": "Force debug daemon mode",
+      "category": "semantic"
+    },
+    "s#E": {
+      "meaning": "steal_route_entropy",
+      "description": "Steal and route to entropy",
+      "category": "semantic"
+    },
+    "h.H9": {
+      "meaning": "health_check_all",
+      "description": "Health check all systems",
+      "category": "semantic"
+    },
+    "r.R4": {
+      "meaning": "repair_critical",
+      "description": "Critical priority repair",
+      "category": "semantic"
+    },
+    "u.U9": {
+      "meaning": "upgrade_all_max",
+      "description": "Maximum intensity upgrade",
+      "category": "semantic"
+    },
+    "b.B3": {
+      "meaning": "build_beta_critical",
+      "description": "Critical beta build",
+      "category": "semantic"
+    },
+    "g.3": {
+      "meaning": "generate_current_high",
+      "description": "Generate current high intensity",
+      "category": "semantic"
+    },
+    "m~E": {
+      "meaning": "mutate_entropy_chaos",
+      "description": "Apply chaotic mutation",
+      "category": "semantic"
+    },
+    "s?E": {
+      "meaning": "probe_entropy_steal",
+      "description": "Probe entropy for patterns",
+      "category": "semantic"
+    },
+    "x$cache": {
+      "meaning": "execute_cache_value",
+      "description": "Execute using cache",
+      "category": "semantic"
+    },
+    "tT\u2192vV\u2192d.D": {
+      "meaning": "test_validate_debug",
+      "description": "Full verification pipeline",
+      "category": "semantic"
+    },
+    "g?E\u2192m.M": {
+      "meaning": "probe_then_mutate",
+      "description": "Probe for stealable then mutate",
+      "category": "semantic"
+    },
+    "C\u03c0": {
+      "meaning": "/c/OMNIPRIME/",
+      "description": "Root OMNIPRIME path",
+      "category": "compound"
+    },
+    "C\u03a3": {
+      "meaning": "/c/Users/jonny/OneDrive/Desktop/OMNIPRIME/SKILLHUB/",
+      "description": "Root SKILLHUB path",
+      "category": "compound"
+    },
+    "C\u03b5": {
+      "meaning": "/c/Users/jonny/OneDrive/Desktop/OMNIPRIME/EVOLVE/",
+      "description": "Root EVOLVE path",
+      "category": "compound"
+    },
+    "C\u03c0\u03b5": {
+      "meaning": "/c/Users/jonny/OneDrive/Desktop/OMNIPRIME/EVOLVE/SKILLHUB/",
+      "description": "EVOLVE SKILLHUB path",
+      "category": "compound"
+    },
+    "C\u03c0\u03ba": {
+      "meaning": "/c/Users/jonny/OneDrive/Desktop/OMNIPRIME/SKILLS/",
+      "description": "Root SKILLS path",
+      "category": "compound"
+    },
+    "\u03c4\u03b6": {
+      "meaning": "2026-T",
+      "description": "ISO timestamp start",
+      "category": "compound"
+    },
+    "\u2716S@": {
+      "meaning": "[ERR_SYNTAX] at line",
+      "description": "Syntax error at line ref",
+      "category": "compound"
+    },
+    "\u2716L@": {
+      "meaning": "[ERR_LOGIC] at line",
+      "description": "Logic error at line ref",
+      "category": "compound"
+    },
+    "G1a\u2192": {
+      "meaning": "GOAL_1.1 \u2192",
+      "description": "Goal reference with arrow",
+      "category": "compound"
+    },
+    "sp\u2192": {
+      "meaning": "[STATUS: PENDING] \u2192",
+      "description": "Pending status with arrow",
+      "category": "compound"
+    },
+    "si\u2192": {
+      "meaning": "[IMPLEMENTED: \u2192",
+      "description": "Implemented marker with arrow",
+      "category": "compound"
+    },
+    "\u2113e@": {
+      "meaning": "Log edge-case at",
+      "description": "Edge-case log with location",
+      "category": "compound"
+    },
+    "nd;": {
+      "meaning": "Never delete entries;",
+      "description": "IDEAS ledger rule",
+      "category": "compound"
+    },
+    "ai:": {
+      "meaning": "Append [IMPLEMENTED:",
+      "description": "Implementation append marker",
+      "category": "compound"
+    },
+    "C\u03c0\u03b3": {
+      "meaning": "/c/Users/jonny/OneDrive/Desktop/OMNIPRIME/GOALS/",
+      "description": "Root GOALS path",
+      "category": "compound"
+    },
+    "C\u03c0\u03b5\u03b3": {
+      "meaning": "/c/Users/jonny/OneDrive/Desktop/OMNIPRIME/EVOLVE/GOALS/",
+      "description": "EVOLVE GOALS path",
+      "category": "compound"
+    },
+    "C\u03c0\u03a6": {
+      "meaning": "/c/Users/jonny/OneDrive/Desktop/OMNIPRIME/tests/",
+      "description": "Root tests path",
+      "category": "compound"
+    }
+  }
+}

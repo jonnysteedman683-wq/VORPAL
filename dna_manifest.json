@@ -1,0 +1,32 @@
+{
+  "codebase": "omniprime",
+  "total_commits": 52,
+  "dna": {
+    "ark": 0.4182,
+    "auroral": 0.0,
+    "omniprime": 0.1636,
+    "donor": 0.4182
+  },
+  "raw_counts": {
+    "ark": 23.0,
+    "auroral": 0,
+    "omniprime": 9.0,
+    "donor": 23.0
+  },
+  "weighted_commits": 55.0,
+  "cross_pollinate_cycles": 23,
+  "self_integrate_cycles": 9,
+  "donor_injects": 23,
+  "reproduction_ready": false,
+  "reproduced": false,
+  "generation": 1,
+  "last_profile": "ark",
+  "last_commit_hash": "synthetic_eb8f4a35f0ad",
+  "phase_history": [],
+  "brain_profile": {
+    "deliberative": 0.3677,
+    "procedural": 0.075,
+    "reactive": 0.1895,
+    "lateral": 0.3677
+  }
+}

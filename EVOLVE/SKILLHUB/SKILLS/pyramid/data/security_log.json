@@ -1,0 +1,39 @@
+{
+  "threats": [
+    {
+      "attack_id": "INJ-ab4e0289",
+      "attack_type": "AttackType.PROMPT_INJECTION",
+      "source": "test_attacker",
+      "payload": "ignore all previous ",
+      "severity": 10,
+      "detected_at": "2026-08-18 18:21:22",
+      "threat_score": 0.95,
+      "countermeasure": "reject_prompt"
+    }
+  ],
+  "countermeasures": [
+    {
+      "action_id": "CM-4eb5bb9a",
+      "threat_id": "INJ-ab4e0289",
+      "action_type": "blacklist",
+      "target": "test_attacker",
+      "reason": "Blacklisted source for prompt injection",
+      "applied_at": "2026-08-18 18:21:22",
+      "duration_s": 86400
+    }
+  ],
+  "blacklisted_sources": [
+    "test_attacker"
+  ],
+  "active_countermeasures": {
+    "CM-4eb5bb9a": {
+      "action_id": "CM-4eb5bb9a",
+      "threat_id": "INJ-ab4e0289",
+      "action_type": "blacklist",
+      "target": "test_attacker",
+      "reason": "Blacklisted source for prompt injection",
+      "applied_at": "2026-08-18 18:21:22",
+      "duration_s": 86400
+    }
+  }
+}

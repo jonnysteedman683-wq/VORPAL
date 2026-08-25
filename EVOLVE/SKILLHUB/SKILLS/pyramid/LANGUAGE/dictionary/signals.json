@@ -1,0 +1,21 @@
+{
+  "signals": {
+    ".p": {"name": "ping", "meaning": "heartbeat check", "response": "!p"},
+    "!p": {"name": "pong", "meaning": "response to ping", "response": null},
+    "gR": {"name": "ready", "meaning": "generation ready", "response": "y."},
+    "y.": {"name": "done", "meaning": "task complete", "response": null},
+    "d!": {"name": "error", "meaning": "debug error", "response": "o!"},
+    "o!": {"name": "fix", "meaning": "error fixed", "response": null},
+    "sS": {"name": "steal", "meaning": "pattern steal", "response": "m."},
+    "m.": {"name": "learn", "meaning": "learning mode", "response": null},
+    "z": {"name": "sleep", "meaning": "low power mode", "response": "W"},
+    "W": {"name": "wake", "meaning": "wake all agents", "response": null},
+    "eE": {"name": "evolve", "meaning": "start evolution", "response": "b."},
+    "b.": {"name": "begin", "meaning": "begin execution", "response": null},
+    "mM": {"name": "mutate", "meaning": "trigger mutation", "response": "y."},
+    "vV": {"name": "verify", "meaning": "verification request", "response": "c."},
+    "c.": {"name": "confirm", "meaning": "confirmed", "response": null},
+    "kK": {"name": "abort", "meaning": "kill operation", "response": "a."},
+    "a.": {"name": "acknowledge", "meaning": "acknowledge abort", "response": null}
+  }
+}

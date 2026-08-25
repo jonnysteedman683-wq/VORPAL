@@ -1,0 +1,40 @@
+{
+  "tribrain_semantic_extensions": {
+    "T9_tribrain": {
+      "🧠": {"word": "deliberative", "category": "component", "tier": 9, "semantic": "tribrain"},
+      "💾": {"word": "memory_cortex", "category": "component", "tier": 9, "semantic": "tribrain"},
+      "🌍": {"word": "world_evolution", "category": "component", "tier": 9, "semantic": "tribrain"},
+      "🔄": {"word": "sleep_loop", "category": "concept", "tier": 9, "semantic": "tribrain"},
+      "🧬": {"word": "cellular_automata", "category": "concept", "tier": 9, "semantic": "tribrain"},
+      "🎯": {"word": "aggregator", "category": "component", "tier": 9, "semantic": "tribrain"},
+      "⚡": {"word": "parallel_moa", "category": "concept", "tier": 9, "semantic": "tribrain"},
+      "🎚": {"word": "zenbrain_layer", "category": "concept", "tier": 9, "semantic": "tribrain"},
+      "🔗": {"word": "hive_persistence", "category": "concept", "tier": 9, "semantic": "tribrain"},
+      "🔍": {"word": "preflight_check", "category": "action", "tier": 9, "semantic": "tribrain"}
+    },
+    "T10_performance": {
+      "📊": {"word": "dashboard", "category": "component", "tier": 10, "semantic": "performance"},
+      "⏱": {"word": "polling", "category": "concept", "tier": 10, "semantic": "performance"},
+      "🐍": {"word": "query_bound", "category": "modifier", "tier": 10, "semantic": "performance"},
+      "🧹": {"word": "cleanup", "category": "action", "tier": 10, "semantic": "performance"},
+      "🧪": {"word": "test_suite", "category": "component", "tier": 10, "semantic": "performance"},
+      "✅": {"word": "gate_pass", "category": "concept", "tier": 10, "semantic": "performance"},
+      "❌": {"word": "gate_fail", "category": "concept", "tier": 10, "semantic": "performance"},
+      "🚦": {"word": "status_traffic", "category": "component", "tier": 10, "semantic": "performance"},
+      "⏲": {"word": "timeout", "category": "concept", "tier": 10, "semantic": "performance"},
+      "🎚": {"word": "throttle", "category": "modifier", "tier": 10, "semantic": "performance"}
+    },
+    "T11_cognitive": {
+      "🤔": {"word": "reasoning", "category": "concept", "tier": 11, "semantic": "cognitive"},
+      "🎭": {"word": "personality", "category": "concept", "tier": 11, "semantic": "cognitive"},
+      "🧭": {"word": "navigation", "category": "concept", "tier": 11, "semantic": "cognitive"},
+      "🔗": {"word": "connection", "category": "concept", "tier": 11, "semantic": "cognitive"},
+      "🧵": {"word": "context_thread", "category": "concept", "tier": 11, "semantic": "cognitive"},
+      "💭": {"word": "thought", "category": "concept", "tier": 11, "semantic": "cognitive"},
+      "👁": {"word": "observation", "category": "concept", "tier": 11, "semantic": "cognitive"},
+      "👂": {"word": "listening", "category": "concept", "tier": 11, "semantic": "cognitive"},
+      "🗣": {"word": "speaking", "category": "concept", "tier": 11, "semantic": "cognitive"},
+      "🧠": {"word": "cognition", "category": "concept", "tier": 11, "semantic": "cognitive"}
+    }
+  }
+}
