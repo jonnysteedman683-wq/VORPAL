@@ -7,6 +7,9 @@ The triad's mistake was running three organisms that shared ~40% donor DNA and
 shuffled state between contexts — a photocopier, not a gene pool. VORPAL keeps
 the proven genome as **internal modes** inside one codebase.
 
+**Operating protocol:** `Desktop/VORPAL-MAIN-PROTOCOL/` — the evolvable law
+(directives, memory ops, skill lifecycle) that implements `SOUL.md`.
+
 ## Layout
 
 ```
