@@ -1,22 +1,35 @@
 {
+  "worktree": "C:\\Users\\jonny\\OneDrive\\Desktop\\VORPAL",
+  "profile": "default",
   "ledger_balance": 500,
-  "last_spend": "2026-08-22T21:06:14.845080+00:00",
+  "last_spend": "2026-08-26T00:00:00.000000+00:00",
+  "lineage": {
+    "parent": "triad (ARK + OMNIPRIME + AURORAL)",
+    "absorbed_on": "2026-08-26",
+    "gen2_spawn_kit": "DROPPED",
+    "ownership_ring": "DROPPED",
+    "bus_protocol": "DROPPED"
+  },
   "last_cycle": {
-    "cycle": 39,
-    "profile": "omniprime",
-    "ts": "2026-08-23T11:23:50.770956+00:00",
+    "cycle": 1,
+    "profile": "default",
+    "ts": "2026-08-26T00:00:00.000000+00:00",
     "shipped": [
-      "scripts/hermes_verify_coldstart_drill.py",
-      "scripts/_coldstart_driver.py"
+      "SOUL.md",
+      "CONSOLIDATION.md",
+      "CORE/ (15 modules)",
+      "LINGUA/ (lingua_prima + lp_tool)"
     ],
-    "repaired": [
-      "BOOTSTRAP.md Stage 1 (ERR_BOOT_RUNTIME)"
-    ],
-    "roadmap": {
-      "OS-4": "DONE",
-      "OS-6": "DONE"
-    },
-    "verify_gate": "29/29 PASS",
-    "coldstart_drill": "booted 3/3"
-  }
+    "verify_gate": "9/9 PASS",
+    "py_compile": "28/28 PASS"
+  },
+  "active_syscalls": [
+    "verify",
+    "quarantine",
+    "log_err",
+    "cache_check",
+    "ledger_balance",
+    "ledger_spend",
+    "tag"
+  ]
 }
