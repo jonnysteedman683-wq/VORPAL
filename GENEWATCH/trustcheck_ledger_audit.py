@@ -100,24 +100,38 @@ def check_goals() -> None:
     """T4: [IMPLEMENTED: x] must have a matching artifact on disk.
     False-positive guards: strip HTML comment blocks (schema placeholders),
     accept directory-based implementations, and accept cross-repo artifacts
-    (e.g. verify_all lives at OMNIPRIME/scripts/verify_all.py)."""
+    (e.g. verify_all lives at OMNIPRIME/scripts/verify_all.py).
+    Performance: pre-index sibling-repo .py filenames once (O(N+M))."""
     if not GOALS.exists():
         report("T4", "GOALS.md missing")
         return
     raw = GOALS.read_text(encoding="utf-8")
     # Strip HTML comment blocks so schema placeholders like [IMPLEMENTED: skill_id] are ignored.
     text = re.sub(r"<!--.*?-->", "", raw, flags=re.DOTALL)
-    cross_repo_roots = [p for p in ROOT.parent.iterdir() if p.is_dir()]
+    # Pre-index sibling-repo .py filenames once to avoid O(N*M) rglob.
+    cross_repo_py: set[str] = set()
+    for sibling in ROOT.parent.iterdir():
+        if not sibling.is_dir() or sibling == ROOT:
+            continue
+        for p in sibling.rglob("*.py"):
+            cross_repo_py.add(p.name)
+    # Known GOALS.md spec inconsistencies: implementation tag -> actual dir name.
+    # procedure_library (GOAL_5.4) lives in PROCEDURE/ — tag/dir mismatch in source spec.
+    KNOWN_DIR_ALIASES = {"procedure_library": "PROCEDURE"}
+
     for m in re.finditer(r"\[IMPLEMENTED:\s*([a-zA-Z0-9_]+)\]", text):
         skill = m.group(1)
         candidates = list(ROOT.rglob(f"**/{skill}.py")) + list(ROOT.rglob(f"**/{skill}/**/SKILL.md"))
         if candidates:
             continue
-        # directory-based implementation (e.g. PROCEDURE/ for procedure_library)
-        if any(p.is_dir() for p in ROOT.rglob(f"**/{skill}")):
+        # directory-based implementation (case-insensitive, with alias fallback)
+        skill_lower = skill.lower()
+        alias_dir = KNOWN_DIR_ALIASES.get(skill, skill)
+        if any(p.name.lower() == skill_lower or p.name.lower() == alias_dir.lower()
+               for p in ROOT.rglob("**/*") if p.is_dir()):
             continue
         # cross-repo artifact (sibling workspace, e.g. OMNIPRIME/scripts/verify_all.py)
-        if any(r.rglob(f"**/{skill}.py") for r in cross_repo_roots if r != ROOT):
+        if f"{skill}.py" in cross_repo_py:
             continue
         report("T4", f"[IMPLEMENTED: {skill}] no artifact, dir, or cross-repo hit found")
 
