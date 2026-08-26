@@ -1,7 +1,7 @@
 """
-lp_tool.py — Lingua Prima CLI for the ARK/OMNIPRIME/AURORAL triad.
-Wraps the canonical engine (OMNIPRIME LANGUAGE/lingua_prima.py) so any profile
-can encode/decode compressed traffic without importing the module directly.
+lp_tool.py — Lingua Prima CLI for VORPAL (consolidated single agent).
+Wraps the canonical engine (LINGUA/lingua_prima.py) so any profile can
+encode/decode compressed traffic without importing the module directly.
 
 Usage:
     python lp_tool.py enc  "analyze then build then test"
@@ -12,7 +12,9 @@ import json
 import sys
 from pathlib import Path
 
-CANONICAL = Path(r"C:\Users\jonny\OneDrive\Desktop\OMNIPRIME\EVOLVE\SKILLHUB\SKILLS\pyramid\LANGUAGE")
+# Canonical engine is LOCAL to VORPAL's LINGUA dir (the OMNIPRIME reference was
+# frozen during consolidation — pointing at it is a stale cross-tree reference).
+CANONICAL = Path(__file__).resolve().parent
 sys.path.insert(0, str(CANONICAL))
 
 from lingua_prima import LinguaPrima  # noqa: E402
