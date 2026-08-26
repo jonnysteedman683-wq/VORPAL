@@ -39,7 +39,7 @@
 
 ## 4. Known follow-ups
 
-- [x] Full harness suite from `VERIFY/harnesses/` — **9/9 PASS** (logged in EVOLVE/NOTES.md)
+- [x] Full harness suite from `VERIFY/harnesses/` — **2/2 live PASS** (plasmid_ast + worker; 6 orphaned harnesses whose modules were dropped during consolidation quarantined to `EVOLVE/SKILLHUB/skill_repair/harnesses/` 2026-08-26).
 - [ ] Point `registry.json` at VORPAL paths (currently references OMNIPRIME worktree)
 - [ ] Rewrite GOALS.md phase headers to drop Lingua task-code ownership notation
 - [ ] Decide profile strategy: drive VORPAL from `default` profile, archive gen-1 profiles

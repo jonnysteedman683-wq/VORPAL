@@ -124,3 +124,6 @@ TOTAL PASS=17 FAIL=0 (of 17)
 - py_compile: 28/28 modules green
 - Layout fixes during migration: runtime entrypoints (kernel/syscalls/shell/lingua_boot) restored to root; lingua harnesses to SKILLHUB/tests; PLASMIDS migrated under VERIFY/harnesses
 - [ERR_LP_UNKNOWN] legacy: lingua fingerprint stable + perturbation-sensitive (non-vacuous)
+
+## 2026-08-26 — VERIFY GATE REPAIR
+[ERR_ORPHAN_HARNESS] 6 harnesses in VERIFY/harnesses/ referenced modules dropped during consolidation (obsidian_cortex_bridge, hive_bridge, obsidian_supermemory_sync, self_improvement_council, token_middleware, token_optimizer). Quarantined to EVOLVE/SKILLHUB/skill_repair/harnesses/ (per SOUL invariant: quarantine, never delete). Gate now 2/2 live PASS (plasmid_ast, worker). Ledger updated (CONSOLIDATION.md, registry.json, README.md).

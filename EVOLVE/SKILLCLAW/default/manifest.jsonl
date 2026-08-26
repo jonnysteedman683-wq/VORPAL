@@ -1,0 +1,139 @@
+{"name": "1password", "description": "Set up op CLI, sign in, and read or inject secrets.", "category": "general", "version": 1}
+{"name": "agent-orchestration", "description": "Use when managing multiple specialized AI agents.", "category": "general", "version": 1}
+{"name": "agent-simulation", "description": "Use when building agent-based sims with evolution or RL.", "category": "general", "version": 1}
+{"name": "agent-triad-orchestration", "description": "Use for multi-Hermes-profile worker rings, agent loops.", "category": "general", "version": 1}
+{"name": "ai-project-integration", "description": "Use when integrating AI projects with Hermes.", "category": "general", "version": 1}
+{"name": "airtable", "description": "Airtable REST API via curl. Records CRUD, filters, upserts.", "category": "general", "version": 1}
+{"name": "alife-simulation", "description": "Evolving AI agent simulations with neural nets and pygame.", "category": "general", "version": 1}
+{"name": "apple-notes", "description": "Manage Apple Notes via memo CLI: create, search, edit.", "category": "general", "version": 1}
+{"name": "apple-reminders", "description": "Apple Reminders via remindctl: add, list, complete.", "category": "general", "version": 1}
+{"name": "architecture-diagram", "description": "Dark-themed SVG architecture/cloud/infra diagrams as HTML.", "category": "general", "version": 1}
+{"name": "arise-personality-genetics", "description": "Use when adding personality, emotions, or genetics to sims.", "category": "general", "version": 1}
+{"name": "arise-sim", "description": "Use when developing ARISE — AI swarm survival simulation.", "category": "general", "version": 1}
+{"name": "arxiv", "description": "Search arXiv papers by keyword, author, category, or ID.", "category": "general", "version": 1}
+{"name": "ascii-art", "description": "ASCII art: pyfiglet, cowsay, boxes, image-to-ascii.", "category": "general", "version": 1}
+{"name": "ascii-video", "description": "ASCII video: convert video/audio to colored ASCII MP4/GIF.", "category": "general", "version": 1}
+{"name": "autonomous-coding-workflow", "description": "Use for autonomous coding: inspect, build, test, commit.", "category": "general", "version": 1}
+{"name": "baoyu-infographic", "description": "Infographics: 21 layouts x 21 styles (信息图, 可视化).", "category": "general", "version": 1}
+{"name": "blocked-page-recovery", "description": "Recover blocked/paywalled/WAF'd pages via fallbacks.", "category": "general", "version": 1}
+{"name": "blogwatcher", "description": "Monitor blogs and RSS/Atom feeds via blogwatcher-cli tool.", "category": "general", "version": 1}
+{"name": "box", "description": "Box manages cloud files, sharing, search, and metadata.", "category": "general", "version": 1}
+{"name": "brainstorming", "description": "Use when you need to generate ideas, solve problems creatively, or explore possibilities. Provides structured brainstorming techniques and facilitation methods.", "category": "general", "version": 1}
+{"name": "claude-code", "description": "Delegate coding to Claude Code CLI (features, PRs).", "category": "general", "version": 1}
+{"name": "claude-design", "description": "Design one-off HTML artifacts (landing, deck, prototype).", "category": "general", "version": 1}
+{"name": "codebase-inspection", "description": "Inspect codebases w/ pygount: LOC, languages, ratios.", "category": "general", "version": 1}
+{"name": "codex", "description": "Delegate coding to OpenAI Codex CLI (features, PRs).", "category": "general", "version": 1}
+{"name": "comfyui", "description": "Generate images, video, and audio via diffusion workflows.", "category": "general", "version": 1}
+{"name": "competitor-news-monitor", "description": "Watch named companies for material news; cited digests.", "category": "general", "version": 1}
+{"name": "computer-use", "description": "Drive the desktop in the background without stealing focus.", "category": "general", "version": 1}
+{"name": "concept-exploration", "description": "Explore and refine creative project ideas before building.", "category": "general", "version": 1}
+{"name": "design-md", "description": "Author/validate/export Google's DESIGN.md token spec files.", "category": "general", "version": 1}
+{"name": "document-to-action-items", "description": "Extract cited obligations, deadlines, tasks from documents.", "category": "general", "version": 1}
+{"name": "docx", "description": "Create, read, edit, template, and review Word .docx files.", "category": "general", "version": 1}
+{"name": "dogfood", "description": "Exploratory QA of web apps: find bugs, evidence, reports.", "category": "general", "version": 1}
+{"name": "duo-dice-engine", "description": "Roll dice to pick HERMES/MARKUS upgrade or skill curation.", "category": "general", "version": 1}
+{"name": "email-inbox-triage", "description": "Triage an inbox: prioritize threads, draft replies safely.", "category": "general", "version": 1}
+{"name": "emergent-sim-dev", "description": "Agent-based & emergent simulation dev (ARISE, alife, evolution/RL): genetics, communication, personality, weather, rendering, performance, pygame.", "category": "general", "version": 1}
+{"name": "emergent-simulation", "description": "Use when building agent-based emergent simulations.", "category": "general", "version": 1}
+{"name": "excalidraw", "description": "Hand-drawn Excalidraw JSON diagrams (arch, flow, seq).", "category": "general", "version": 1}
+{"name": "expose-local-web", "description": "Expose local server to web via tunnel; precheck the port.", "category": "devops", "version": 1}
+{"name": "findmy", "description": "Track Apple devices/AirTags via FindMy.app on macOS.", "category": "general", "version": 1}
+{"name": "frontend-backend-telemetry-and-cleanup", "description": "Add telemetry, polish UI, and remove dead/fake code safely.", "category": "general", "version": 1}
+{"name": "gh-cli-github-ops", "description": "GitHub ops via gh CLI when web_search is dead: releases.", "category": "devops", "version": 1}
+{"name": "gif-search", "description": "Search/download GIFs from Tenor via curl + jq.", "category": "general", "version": 1}
+{"name": "github-code-review", "description": "Review PRs: diffs, inline comments via gh or REST.", "category": "general", "version": 1}
+{"name": "github-issue-to-pr", "description": "Carry a GitHub issue to a verified PR with honest CI state.", "category": "general", "version": 1}
+{"name": "github-issues", "description": "Create, triage, label, assign GitHub issues via gh or REST.", "category": "general", "version": 1}
+{"name": "github-pr-workflow", "description": "GitHub PR lifecycle: branch, commit, open, CI, merge.", "category": "general", "version": 1}
+{"name": "github-repo-management", "description": "Clone/create/fork repos; manage remotes, releases.", "category": "general", "version": 1}
+{"name": "gitnexus-explorer", "description": "Serve an interactive codebase knowledge graph web UI.", "category": "general", "version": 1}
+{"name": "google-workspace", "description": "Gmail, Calendar, Drive, Docs, Sheets via gws CLI or Python.", "category": "general", "version": 1}
+{"name": "grounded-citations", "description": "Ground answers and documents in cited, verifiable sources.", "category": "general", "version": 1}
+{"name": "heartmula", "description": "HeartMuLa: Suno-like song generation from lyrics + tags.", "category": "general", "version": 1}
+{"name": "hermes-agent", "description": "Use, configure, theme, extend, and orchestrate Hermes Agent.", "category": "general", "version": 1}
+{"name": "hermes-agent-capability-wiring", "description": "Install and wire third-party skills and plugins for Hermes.", "category": "general", "version": 1}
+{"name": "hermes-agent-skill-authoring", "description": "Author in-repo SKILL.md files: frontmatter and structure.", "category": "general", "version": 1}
+{"name": "hermes-cron-patterns", "description": "Author Hermes cron jobs: deliver='all', off-peak runs.", "category": "devops", "version": 1}
+{"name": "hermes-cron-watchdog", "description": "Build zero-token no_agent cron watchdog scripts.", "category": "general", "version": 1}
+{"name": "hermes-hive-platform", "description": "Operate Hermes Hive and integrate it with SUPRIME.", "category": "general", "version": 1}
+{"name": "hermes-profile-shellout", "description": "Use when shelling out to a Hermes profile from a script.", "category": "devops", "version": 1}
+{"name": "hermes-skill-management", "description": "Use when installing or enabling Hermes skills via CLI.", "category": "devops", "version": 1}
+{"name": "hermes-upgrade-check", "description": "Check Hermes upgrades via gh CLI when web_search fails.", "category": "devops", "version": 1}
+{"name": "hermes-worker-agents", "description": "Use when building an agent that drives Hermes via its CLI.", "category": "general", "version": 1}
+{"name": "hermes-workspace-integration", "description": "hermes-workspace sidecar GUI setup", "category": "general", "version": 1}
+{"name": "himalaya", "description": "Himalaya CLI: IMAP/SMTP email from terminal.", "category": "general", "version": 1}
+{"name": "hive-swarm-mind-integration", "description": "Hermes + Neurocore + OMNIBUS + Hive/Sentinel: wiring, UI mounts, ops, verification.", "category": "general", "version": 1}
+{"name": "huggingface-hub", "description": "HuggingFace hf CLI: search/download/upload models, datasets.", "category": "general", "version": 1}
+{"name": "humanizer", "description": "Humanize text: strip AI-isms and add real voice.", "category": "general", "version": 1}
+{"name": "imessage", "description": "Send and receive iMessages/SMS via the imsg CLI on macOS.", "category": "general", "version": 1}
+{"name": "inspecting-hermes-desktop-dom", "description": "Read the live Hermes desktop DOM/CSS over CDP.", "category": "general", "version": 1}
+{"name": "jupyter-live-kernel", "description": "Iterative Python via live Jupyter kernel (hamelnb).", "category": "general", "version": 1}
+{"name": "live-state-dashboards", "description": "Use when building a dashboard rendering live state.", "category": "general", "version": 1}
+{"name": "llm-wiki", "description": "Karpathy's LLM Wiki: build/query interlinked markdown KB.", "category": "general", "version": 1}
+{"name": "local-llm-ollama", "description": "Run local models with Ollama; wire them into Hermes.", "category": "general", "version": 1}
+{"name": "loop-creation", "description": "Stand up recurring Hermes loops (cron + verify + safe-stop).", "category": "devops", "version": 1}
+{"name": "loop-factory", "description": "Design a loop that proposes/creates other loops safely.", "category": "devops", "version": 1}
+{"name": "loop-factory-reviewer", "description": "Review loop-factory proposals and one-click approve them.", "category": "devops", "version": 1}
+{"name": "loop-retirement", "description": "Retires a Hermes loop: pause, archive, remove, record.", "category": "devops", "version": 1}
+{"name": "loop-reversal", "description": "Reverses a loop's side effects: inventory, rollback, verify.", "category": "devops", "version": 1}
+{"name": "manim-video", "description": "Manim CE animations: 3Blue1Brown math/algo videos.", "category": "general", "version": 1}
+{"name": "maps", "description": "Geocode, POIs, routes, timezones via OpenStreetMap/OSRM.", "category": "general", "version": 1}
+{"name": "markus-autonomous-dice-engine", "description": "Use when driving MARKUS OS autonomous upgrade cycles — dice roll, stage selection, reward-weighted topology adaptation.", "category": "software-development", "version": 1}
+{"name": "markus-autonomous-stack", "description": "Use when automating MARKUS OS or its cron pipeline.", "category": "devops", "version": 1}
+{"name": "markus-os-dev-operations", "description": "Use when operating, deploying, or monitoring MARKUS OS — server lifecycle, port 8128, rolling logs, git flow.", "category": "software-development", "version": 1}
+{"name": "markus-os-development", "description": "Use when developing or modifying MARKUS OS modules — backend robustness, intent routing, kernel, cortex. Canonical dev conventions for the stack.", "category": "software-development", "version": 1}
+{"name": "mcp-server-development", "description": "Use when building or integrating Hermes MCP servers.", "category": "general", "version": 1}
+{"name": "meeting-action-items", "description": "Turn meeting notes into cited decisions, owners, tickets.", "category": "general", "version": 1}
+{"name": "memory-enhancement-search", "description": "Research memory provider upgrades for AI agents.", "category": "general", "version": 1}
+{"name": "merge-reconciler", "description": "Neutral third-party resolution of agent merge conflicts.", "category": "general", "version": 1}
+{"name": "model-latency-bench", "description": "Bench model latency (TTFB) after a switch to verify speed.", "category": "general", "version": 1}
+{"name": "model-marketplace-research", "description": "Research model providers and free tiers for task fit.", "category": "general", "version": 1}
+{"name": "nano-pdf", "description": "Edit text in existing PDFs via natural-language prompts.", "category": "general", "version": 1}
+{"name": "neurocore-omnibus-integration", "description": "Debug Neurocore-OMNIBUS API wiring and bridge behavior.", "category": "general", "version": 1}
+{"name": "node-inspect-debugger", "description": "Debug Node.js via --inspect + Chrome DevTools Protocol CLI.", "category": "general", "version": 1}
+{"name": "notion", "description": "Notion API + ntn CLI: pages, databases, markdown, Workers.", "category": "general", "version": 1}
+{"name": "obsidian", "description": "Read, search, create, and edit notes in the Obsidian vault.", "category": "general", "version": 1}
+{"name": "ocr-and-documents", "description": "Extract text from PDFs/scans (pymupdf, marker-pdf).", "category": "general", "version": 1}
+{"name": "omnibus-neurocore-operations", "description": "Start/restart OMNIBUS and verify Neurocore on Windows.", "category": "general", "version": 1}
+{"name": "opencode", "description": "Delegate coding to OpenCode CLI (features, PR review).", "category": "general", "version": 1}
+{"name": "openhue", "description": "Control Philips Hue lights, scenes, rooms via OpenHue CLI.", "category": "general", "version": 1}
+{"name": "p5js", "description": "p5.js sketches: gen art, shaders, interactive, 3D.", "category": "general", "version": 1}
+{"name": "pdf", "description": "Create, read, merge, fill, and secure PDF files.", "category": "general", "version": 1}
+{"name": "petdex", "description": "Install and select animated petdex mascots for Hermes.", "category": "general", "version": 1}
+{"name": "plan", "description": "Write a markdown plan to .hermes/plans/; no execution.", "category": "general", "version": 1}
+{"name": "polymarket", "description": "Query Polymarket: markets, prices, orderbooks, history.", "category": "general", "version": 1}
+{"name": "popular-web-designs", "description": "54 real design systems (Stripe, Linear, Vercel) as HTML/CSS.", "category": "general", "version": 1}
+{"name": "port-ml-across-frameworks", "description": "Use when porting neural net code between frameworks.", "category": "general", "version": 1}
+{"name": "porting-codebases", "description": "Port code across languages, repos, and ML frameworks (TS→Python, PyTorch→NumPy).", "category": "general", "version": 1}
+{"name": "powerpoint", "description": "Create, read, edit .pptx decks with python-pptx.", "category": "general", "version": 1}
+{"name": "pretext", "description": "Build creative browser demos with DOM-free text layout.", "category": "general", "version": 1}
+{"name": "product-price-monitor", "description": "Watch product, flight, or listing prices; alert on target.", "category": "general", "version": 1}
+{"name": "python-debugpy", "description": "Debug Python: pdb REPL + debugpy remote (DAP).", "category": "general", "version": 1}
+{"name": "python-non-package-import", "description": "Import Python modules from any file path.", "category": "general", "version": 1}
+{"name": "python-script-verification", "description": ">-", "category": "general", "version": 1}
+{"name": "python-test-compatibility-debugging", "description": "Fix ImportError tests expecting APIs the module lacks.", "category": "general", "version": 1}
+{"name": "requesting-code-review", "description": "Pre-commit review: security scan, quality gates, auto-fix.", "category": "general", "version": 1}
+{"name": "research-paper-writing", "description": "Write ML papers for NeurIPS/ICML/ICLR: design→submit.", "category": "general", "version": 1}
+{"name": "sdlc-review", "description": "Review Kanban handoffs and route verified outcomes.", "category": "general", "version": 1}
+{"name": "self-evolution-and-code-optimization", "description": "", "category": "general", "version": 1}
+{"name": "session-librarian", "description": "Organize sessions by prompt: find, rename, archive, prune.", "category": "general", "version": 1}
+{"name": "simplify-code", "description": "Parallel 4-agent cleanup of recent code changes.", "category": "general", "version": 1}
+{"name": "sketch", "description": "Throwaway HTML mockups: 2-3 design variants to compare.", "category": "general", "version": 1}
+{"name": "skill-creation-loop", "description": "Auto-distill reusable skills from sessions via Hermes cron.", "category": "devops", "version": 1}
+{"name": "skillclaw-integration", "description": "SkillClaw post-task evolution layer", "category": "general", "version": 1}
+{"name": "songsee", "description": "Audio spectrograms/features (mel, chroma, MFCC) via CLI.", "category": "general", "version": 1}
+{"name": "songwriting-and-ai-music", "description": "Songwriting craft and Suno AI music prompts.", "category": "general", "version": 1}
+{"name": "spike", "description": "Throwaway experiments to validate an idea before build.", "category": "general", "version": 1}
+{"name": "supermemory-maintenance", "description": "Use when clearing stale or conflicting supermemory entries.", "category": "general", "version": 1}
+{"name": "swarm-hive-ui-operations", "description": "Hive Swarm UI and Neurocore/OMNIBUS backend wiring.", "category": "general", "version": 1}
+{"name": "systematic-debugging", "description": "4-phase root cause debugging: understand bugs before fixing.", "category": "general", "version": 1}
+{"name": "teams-meeting-pipeline", "description": "Teams meeting summaries, job replay, Graph subscriptions.", "category": "general", "version": 1}
+{"name": "test-driven-development", "description": "TDD: enforce RED-GREEN-REFACTOR, tests before code.", "category": "general", "version": 1}
+{"name": "touchdesigner-mcp", "description": "Control TouchDesigner via twozero MCP.", "category": "general", "version": 1}
+{"name": "ts-to-python-porting", "description": "Use when porting TypeScript ML/RL code to Python/NumPy.", "category": "general", "version": 1}
+{"name": "ui-system-integration", "description": "Mount external UIs and wire cross-system API bridges.", "category": "general", "version": 1}
+{"name": "verify-after-mutation", "description": "Verify resulting state after any mutating command.", "category": "devops", "version": 1}
+{"name": "weekly-review-planning", "description": "Weekly reset: commitments, stalled work, next-week plan.", "category": "general", "version": 1}
+{"name": "xlsx", "description": "Create, read, edit Excel .xlsx workbooks and CSVs.", "category": "general", "version": 1}
+{"name": "xurl", "description": "X/Twitter via xurl CLI: raw post search, posting, DM, media.", "category": "general", "version": 1}
+{"name": "youtube-content", "description": "YouTube transcripts to summaries, threads, blogs.", "category": "general", "version": 1}

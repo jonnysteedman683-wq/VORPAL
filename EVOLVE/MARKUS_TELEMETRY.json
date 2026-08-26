@@ -1,0 +1,77 @@
+{
+  "written_at": 1787741930.6363294,
+  "matrix": [
+    {
+      "model": "poolside/laguna-s-2.1:free",
+      "provider": "nous",
+      "tier": "FAST_CODE",
+      "base_weight": 0.5,
+      "current_weight": 0.519,
+      "total_calls": 29,
+      "success_rate": 0.86,
+      "avg_latency_ms": 426.77,
+      "reliability_score": 0.855,
+      "consecutive_failures": 0,
+      "circuit_broken": false
+    },
+    {
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "provider": "nous",
+      "tier": "MEGACONTEXT_ARCH",
+      "base_weight": 1.0,
+      "current_weight": 0.1,
+      "total_calls": 20,
+      "success_rate": 0.2,
+      "avg_latency_ms": 953.38,
+      "reliability_score": 0.2,
+      "consecutive_failures": 0,
+      "circuit_broken": false
+    },
+    {
+      "model": "inclusionai/ling-3.0-flash",
+      "provider": "nous",
+      "tier": "REALTIME_LINT",
+      "base_weight": 1.5,
+      "current_weight": 1.5,
+      "total_calls": 0,
+      "success_rate": 0.0,
+      "avg_latency_ms": 0.0,
+      "reliability_score": 1.0,
+      "consecutive_failures": 0,
+      "circuit_broken": false
+    },
+    {
+      "model": "custom/qwen2.5-coder:7b",
+      "provider": "ollama",
+      "tier": "AIRGAPPED_LOCAL",
+      "base_weight": 0.8,
+      "current_weight": 0.8,
+      "total_calls": 0,
+      "success_rate": 0.0,
+      "avg_latency_ms": 0.0,
+      "reliability_score": 1.0,
+      "consecutive_failures": 0,
+      "circuit_broken": false
+    },
+    {
+      "model": "google/gemini-3.7-flash",
+      "provider": "nous",
+      "tier": "PAID_HIGH_REASONING",
+      "base_weight": 1.4,
+      "current_weight": 1.4,
+      "total_calls": 0,
+      "success_rate": 0.0,
+      "avg_latency_ms": 0.0,
+      "reliability_score": 1.0,
+      "consecutive_failures": 0,
+      "circuit_broken": false
+    }
+  ],
+  "network": {
+    "primary_connection_type": "vpn",
+    "has_internet": false,
+    "vpn_active": true
+  },
+  "server_ok": true,
+  "extra": {}
+}

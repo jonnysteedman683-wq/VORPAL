@@ -32,7 +32,8 @@ VORPAL/
 ```bash
 # Verify the blade is sharp — all harnesses green, zero stubs
 python -m py_compile CORE/*.py LINGUA/*.py
-python VERIFY/harnesses/hermes_verify_self_improvement.py   # (example gate)
+python VERIFY/harnesses/hermes_verify_plasmid_ast.py     # (plasmid AST gate)
+python VERIFY/harnesses/hermes_verify_worker.py          # (worker gate)
 
 # Boot the runtime
 python CORE/kernel.py

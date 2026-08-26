@@ -20,7 +20,7 @@
       "CORE/ (15 modules)",
       "LINGUA/ (lingua_prima + lp_tool)"
     ],
-    "verify_gate": "9/9 PASS",
+    "verify_gate": "2/2 live PASS (6 orphaned harnesses quarantined 2026-08-26)",
     "py_compile": "28/28 PASS"
   },
   "active_syscalls": [
