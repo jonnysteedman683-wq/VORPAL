@@ -1,16 +1,16 @@
 {
-  "written_at": 1787741930.6363294,
+  "written_at": 1787743488.7630918,
   "matrix": [
     {
       "model": "poolside/laguna-s-2.1:free",
       "provider": "nous",
       "tier": "FAST_CODE",
       "base_weight": 0.5,
-      "current_weight": 0.519,
-      "total_calls": 29,
+      "current_weight": 0.506,
+      "total_calls": 44,
       "success_rate": 0.86,
-      "avg_latency_ms": 426.77,
-      "reliability_score": 0.855,
+      "avg_latency_ms": 627.93,
+      "reliability_score": 0.859,
       "consecutive_failures": 0,
       "circuit_broken": false
     },
@@ -20,9 +20,9 @@
       "tier": "MEGACONTEXT_ARCH",
       "base_weight": 1.0,
       "current_weight": 0.1,
-      "total_calls": 20,
+      "total_calls": 30,
       "success_rate": 0.2,
-      "avg_latency_ms": 953.38,
+      "avg_latency_ms": 931.15,
       "reliability_score": 0.2,
       "consecutive_failures": 0,
       "circuit_broken": false
@@ -68,9 +68,9 @@
     }
   ],
   "network": {
-    "primary_connection_type": "vpn",
+    "primary_connection_type": "wifi",
     "has_internet": false,
-    "vpn_active": true
+    "vpn_active": false
   },
   "server_ok": true,
   "extra": {}
