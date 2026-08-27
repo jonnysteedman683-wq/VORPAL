@@ -1,77 +1,12 @@
 {
-  "written_at": 1787743488.7630918,
+  "written_at": 1787761852.3707602,
   "matrix": [
     {
-      "model": "poolside/laguna-s-2.1:free",
-      "provider": "nous",
-      "tier": "FAST_CODE",
-      "base_weight": 0.5,
-      "current_weight": 0.506,
-      "total_calls": 44,
-      "success_rate": 0.86,
-      "avg_latency_ms": 627.93,
-      "reliability_score": 0.859,
-      "consecutive_failures": 0,
-      "circuit_broken": false
-    },
-    {
-      "model": "deepseek/deepseek-v4-pro-0813",
-      "provider": "nous",
-      "tier": "MEGACONTEXT_ARCH",
-      "base_weight": 1.0,
-      "current_weight": 0.1,
-      "total_calls": 30,
-      "success_rate": 0.2,
-      "avg_latency_ms": 931.15,
-      "reliability_score": 0.2,
-      "consecutive_failures": 0,
-      "circuit_broken": false
-    },
-    {
-      "model": "inclusionai/ling-3.0-flash",
-      "provider": "nous",
-      "tier": "REALTIME_LINT",
-      "base_weight": 1.5,
-      "current_weight": 1.5,
-      "total_calls": 0,
-      "success_rate": 0.0,
-      "avg_latency_ms": 0.0,
-      "reliability_score": 1.0,
-      "consecutive_failures": 0,
-      "circuit_broken": false
-    },
-    {
-      "model": "custom/qwen2.5-coder:7b",
-      "provider": "ollama",
-      "tier": "AIRGAPPED_LOCAL",
-      "base_weight": 0.8,
-      "current_weight": 0.8,
-      "total_calls": 0,
-      "success_rate": 0.0,
-      "avg_latency_ms": 0.0,
-      "reliability_score": 1.0,
-      "consecutive_failures": 0,
-      "circuit_broken": false
-    },
-    {
-      "model": "google/gemini-3.7-flash",
-      "provider": "nous",
-      "tier": "PAID_HIGH_REASONING",
-      "base_weight": 1.4,
-      "current_weight": 1.4,
-      "total_calls": 0,
-      "success_rate": 0.0,
-      "avg_latency_ms": 0.0,
-      "reliability_score": 1.0,
-      "consecutive_failures": 0,
-      "circuit_broken": false
+      "model": "offline",
+      "w": 0.5
     }
   ],
-  "network": {
-    "primary_connection_type": "wifi",
-    "has_internet": false,
-    "vpn_active": false
-  },
-  "server_ok": true,
+  "network": {},
+  "server_ok": false,
   "extra": {}
 }

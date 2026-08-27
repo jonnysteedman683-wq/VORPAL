@@ -85,51 +85,6 @@ Pitfall: Sentinel source calls `/api/chat` with `message`, `history`, `confidenc
 
 Critical fix: do NOT implement `/api/chat` as `fetch('http://localhost:3001/api/neurocore/intent')` from inside `server.cjs`. That creates a self-loop. Instead, call `routeToAI(triageProvider, body.model, systemPrompt, question)` directly in the `/api/chat` handler and return `{ response, provider, confidence, swarmId: null }`. This preserves real routed responses without circular HTTP.
 
-## Sentinel Backend Stub Coverage
-
-Sentinel `src/` references many ARC backend routes that OMNIBUS does not implement by default. Add lightweight stubs in `server.cjs` so every panel gets a valid JSON response instead of 404:
-
-- `POST /api/embed` -> `{ success, embedding: number[] }`
-- `POST /api/knowledge/add` -> `{ success, added }`
-- `GET /api/knowledge/status` -> `{ success, connected, count }`
-- `POST /api/knowledge/sync` -> `{ success }`
-- `GET /api/knowledge/erd` -> `{ success, entities, relations }`
-- `POST /api/consolidate-memories` -> `{ success, consolidated }`
-- `POST /api/memory/collapse` -> `{ success, collapsed }`
-- `POST /api/tag-memory` -> `{ success, id, tags }`
-- `POST /api/debate/step` -> `{ success, state, move }`
-- `POST /api/debate/evaluate` -> `{ success, score }`
-- `POST /api/debate/synthesize` -> `{ success, synthesis }`
-- `GET /api/world-model/status` -> `{ success, active }`
-- `POST /api/world-model/rollout` -> `{ success, steps }`
-- `GET /api/skills/summary` -> `{ success, skills }`
-- `POST /api/system/evolve` -> `{ success, fileName, applied }`
-- `POST /api/execute-code` -> `{ success, output, error }`
-- `POST /api/brainstorm` -> `{ success, ideas }`
-- `POST /api/sculpting/prune` -> `{ success }`
-- `POST /api/sculpting/bridge` -> `{ success }`
-- `GET /api/debug/diagnostics` -> `{ success, diagnostics }`
-- `POST /api/debug/reset-quota` -> `{ success }`
-- `GET /api/debug/pipeline-diagnostics` -> `{ success, stages }`
-- `GET /api/debug/trace` -> `{ success, traceId, events }`
-- `POST /api/debug/replay` -> `{ success, replayed }`
-- `GET /api/episodes/timeline` -> `{ success, episodes }`
-- `GET /api/goals/generate` -> `{ success, goals }`
-- `POST /api/goals/save` -> `{ success }`
-- `POST /api/goals/update-task` -> `{ success }`
-- `GET /api/identity/history` -> `{ success, history }`
-- `GET /api/identity/proposals` -> `{ success, proposals }`
-- `POST /api/identity/proposals/action` -> `{ success }`
-- `GET /api/memory/multimodal` -> `{ success, memories }`
-- `POST /api/system/heal` -> `{ success, message }`
-- `GET /api/system/health-history` -> map recent intents to health event shape
-- `GET /api/debate/telemetry` -> `{ transitions, agents }`
-- `GET /api/federated/collective-dream/1` -> `{ round, narrative, updatedAt }`
-- `GET /api/dream/history` -> `{ success, dreams }`
-- `POST /api/system/execute-healing` -> `{ success, message }`
-
-Keep these minimal; replace with real implementations only when a panel needs non-empty data.
-
 ## Auto-Triage Router
 
 Confidence routing:
@@ -165,91 +120,34 @@ winget install --id Cloudflare.cloudflared --accept-package-agreements --accept-
 /c/Program\ Files\ \(x86\)/cloudflared/cloudflared.exe tunnel --url http://localhost:3001
 ```
 
-## Known Pitfalls
+## Known Pitfalls & Cloudflare tunnel notes
 
-- On Windows/OneDrive, absolute paths are safer than relative cross-repo requires.
-- Do not call missing adapter methods like `getHealthMetrics()` unless the adapter actually provides them.
-- Keep backend entrypoint `.cjs` if the repo mixes ESM and CJS files.
-- If old background logs show stale module-resolution errors, inspect the live `server.cjs` require path before retrying.
-- Use dynamic `import('file://' + path)` only from the ESM/CJS bridge; don't use `require('file://...')`.
-- When adding bridge modules, also add accessor functions (`getMemoryStore`, `getLearningLogger`) instead of exporting singletons directly.
-- `tests/*.test.ts` can fail when `package.json` points at a directory without `index.ts`; fix the test script to the actual file path.
-- `/api/neurocore/intent` rejects `phase: null`; omit the field when the caller has no phase.
-- `/api/chat` bridge must compute triage provider before calling `/api/neurocore/intent`; otherwise intent handler sees `source: undefined` and may route incorrectly.
-- `/api/neurocore/intent` returns `{ success, triage: { confidence, routedTo }, actionId, status }`, not `{ response, provider, confidence, swarmId }`. The `/api/chat` bridge must translate `actionId` into a user-facing `response` and read routing from `triage.routedTo`.
+The accumulated failure ledger (absolute-path discipline, `.cjs`
+entrypoint, `phase: null` rejection, `/api/chat` bridge translation,
+tunnel ephemerality) lives in `references/pitfalls.md` — load it when
+a wiring step fails.
 
 ## Antigravity Integration
 
-OMNIBUS can invoke Antigravity tasks through a backend route, which is useful for the daily 5AM upgrade and hourly optimization jobs already scheduled in this setup.
+OMNIBUS can invoke Antigravity tasks through a backend route, useful
+for the daily 5AM upgrade and hourly optimization jobs already
+scheduled in this setup. Full detail — the `/api/antigravity/run`
+route code, the `agy`-on-PATH pitfall, `AG_BIN`, and the Windows
+install paths (Electron app / `agentapi.bat` / `language_server.exe`,
+and why `command -v agy` failing does NOT mean Antigravity is absent)
+— lives in `references/antigravity-integration.md`.
 
-### Backend route
+## Sentinel Backend Stub Coverage & Payload Hardening
 
-Add in `server.cjs`:
+Wiring ARC Sentinel panels under OMNIBUS is branch work. The full
+Sentinel-backend reference lives in `references/sentinel-backend-stubs.md`:
 
-```js
-app.post('/api/antigravity/run', async (req, res) => {
-  const { prompt, model, timeoutMs, workdir } = req.body || {};
-  const task = typeof prompt === 'string' && prompt.trim() ? prompt.trim() : 'Run OMNIBUS maintenance and suggest improvements.';
-  const targetDir = workdir || __dirname;
-  const printTimeout = Math.min(Math.max(timeoutMs || 5 * 60 * 1000, 1000), 20 * 60 * 1000);
-  const command = `"${process.env.AG_BIN || 'agy'}" -p ${JSON.stringify(task)} ${model ? `--model ${JSON.stringify(model)}` : ''} --print-timeout ${printTimeout}`;
+- the ~40 stub endpoints every panel needs (valid JSON instead of 404)
+- the `toFixed` render-crash fix (numeric fields on both sides,
+  `.toFixed()` guards, and the `/api/health` vs `/api/system/health`
+  unify pitfall)
 
-  try {
-    const result = await new Promise((resolve, reject) => {
-      const proc = require('child_process').exec(command, { cwd: targetDir, maxBuffer: 1024 * 1024 * 5 }, (error, stdout, stderr) => {
-        resolve({ ok: !error, stdout: stdout || '', stderr: stderr || '', code: error ? (error.code || 1) : 0 });
-      });
-      if (proc.pid && typeof proc.kill === 'function') {
-        setTimeout(() => proc.kill('SIGTERM'), printTimeout + 1000).unref?.();
-      }
-    });
-
-    telemetry.intents.push({ id: `ag-${Date.now()}`, intent: 'antigravity-run', provider: 'system', confidence: 1, latencyMs: 0, status: result.ok ? 'completed' : 'failed', timestamp: Date.now(), raw: { prompt: task, model, workdir: targetDir, timeoutMs: printTimeout } });
-
-    res.json({ success: result.ok, command, workdir: targetDir, timeoutMs: printTimeout, stdout: result.stdout, stderr: result.stderr, code: result.code });
-  } catch (err) {
-    res.status(500).json({ success: false, command, workdir: targetDir, timeoutMs: printTimeout, error: err.message });
-  }
-});
-```
-
-Pitfall: this route shells out to `agy`. If Antigravity is installed only as the Electron app on Windows, there may be no `agy` on PATH. In that case either:
-- add `AG_BIN` env var pointing to a real CLI wrapper, or
-- create a wrapper script at a known path and point `AG_BIN` to it.
-
-### Windows Antigravity paths
-
-On this Windows host, Antigravity installs as:
-- Electron app: `C:\Users\jonny\AppData\Local\Programs\antigravity\Antigravity.exe`
-- Agent API wrapper: `C:\Users\jonny\.gemini\antigravity\bin\agentapi.bat`
-- Language server: `C:\Users\jonny\AppData\Local\Programs\antigravity\resources\bin\language_server.exe`
-
-There is no standalone `agy.exe` on PATH by default. If `command -v agy` fails, do not assume Antigravity is absent; check the installed app paths above and decide whether to create a wrapper or use the agent API path.
-
-## Sentinel Backend Payload Hardening
-
-Symptom: built Sentinel UI throws `TypeError: Cannot read properties of undefined (reading 'toFixed')` from `assets/index-*.js`. This is a frontend render crash caused by missing numeric fields in backend responses.
-
-Fix both sides:
-
-1. Backend: ensure these endpoints always return numeric fields:
-   - `GET /api/system/health` -> include `uptimeMs`, `uptime`, `memoryUsage: { heapUsed, heapTotal, rss }`, `activeConnections`, `unhandledErrors`
-   - `GET /api/debug/diagnostics` -> include `memory`, `latency`, `errors`, `providers`, `circuitBreaker`, `queueSize`, `uptimeMs`, `uptime`, `memoryUsage`, `activeConnections`, `unhandledErrors`, `firestoreReadErrors`, `firestoreWriteErrors`
-   - `GET /api/debug/pipeline-diagnostics` -> return `stages: Array<{ name, status, latencyMs }>`
-   - `GET /api/debate/telemetry` -> return `transitions: []`, `agents: Array<{ id, updatedAt }>`
-
-2. Frontend: where Sentinel source calls `.toFixed()` on API-derived values, guard with defaults:
-   - `(value ?? 0).toFixed(n)`
-   - `value?.toFixed(n) ?? 'N/A'`
-   - `Number(value).toFixed(n)`
-
-Pitfall: do not add these hardened fields only to `/api/health` if Sentinel panels call `/api/system/health`. Either unify them or keep both endpoints returning the same numeric shape.
-
-## Cloudflare Tunnel Notes
-
-- Quick tunnel URLs are ephemeral; they rotate when the tunnel process restarts or after timeouts.
-- On this host/network, Cloudflare DNS can time out during tunnel startup even when `cloudflared` is running. In that case the tunnel is effectively unreachable from outside.
-- Fallback: verify public access by fetching the tunnel URL from the same network path users will use. If it returns non-2xx or times out, stop advertising the public URL until the tunnel is healthy again.
+Load it when a Sentinel panel 404s or crashes rendering.
 
 ## Push Pattern
 

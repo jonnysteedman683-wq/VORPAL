@@ -14,6 +14,31 @@ metadata:
 # MARKUS OS Development
 
 ## When to Use
+
+- Single source of truth for model routing: `markus_brain_backend.TIER_MODELS`
+  is the canonical router tier -> Nous model map; `markus_router.py` imports it.
+  Never define a second model map in the router — divergence produced phantom
+  `openrouter/*:free` IDs that no client could call while the brain actually
+  called deepseek via Nous (telemetry learned from a model that never ran).
+  Fix = one shared constant map + phantom-ID sweep
+  (`grep -rn "openrouter/" --include="*.py" .`). Gate:
+  `hermes_verify_markus_brain.py` G3 alignment invariant + G4 no-phantom sweep.
+- Brain gate: `hermes_verify_markus_brain.py` (5 gates, opt-in live probe via
+  `MARKUS_BRAIN_LIVE_PROBE=1`). Loading modules by path in a harness using
+  dataclasses requires `sys.modules[spec.name] = mod` BEFORE exec_module, and
+  class attributes read off the class (`R = rt.MarkusIntentRouter`).
+- Server restart required after edits: `markus_server.py` imports router +
+  brain backend at startup; the live PID on 8128 keeps the old module in
+  memory until `python markus_server.py` is restarted.
+- Cost ledger: `markus_brain_backend.py` has per-call accounting.
+  `MODEL_PRICES` is the per-token USD table (verify live via the Nous
+  `/models` catalog when adding a model), `record_cost()` appends a
+  thread-safe JSONL entry to `markus_brain_cost_ledger.jsonl`, and
+  `ask_brain()` captures usage from the API response automatically.
+  `estimate_cost()` fails safe to $0 for unknown models. Check the ledger
+  with `python markus_brain_backend.py --ledger`. Gate:
+  `hermes_verify_brain_cost.py`.
+
 Use when writing, fixing, or auditing MARKUS OS backend modules: `markus_server.py`,
 `markus_router.py`, `markus_kernel.py`, `markus_db.py`, `markus_resilience.py`,
 `markus_mesh.py`, `markus_thors.py`.

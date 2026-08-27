@@ -7,11 +7,14 @@
 [IMPLEMENTED: bootstrap_1_0] OMNIPRIME BOOTSTRAP.md - Cold-start loader with 5-stage boot sequence
 [IMPLEMENTED: soul_1_0] OMNIPRIME SOUL.md - Constitution document for Forge Loop Node
 
-- [c39 omniprime] **Executable BOOTSTRAP for ARK + AURORAL.** Both boots are prose-only, so
-  `[ERR_BOOT_NOT_EXECUTABLE]` stands and gen-2 cannot boot unattended. Give each a
-  `## Stage N` python block set (identity -> language -> ledger bind -> bus heartbeat ->
-  ready signal) so `hermes_verify_coldstart_drill.py` BOOT-A gates all three, not just
-  OMNIPRIME. Prereq for claiming spawn currency honestly.
+- [c39 omniprime] **Executable BOOTSTRAP for ARK + AURORAL.** ✅ COMPLETE —
+  Both ARK (`CORE/ark_bootstrap.py`) and AURORAL (`CORE/auroral_bootstrap.py`) now
+  have executable Stage 1-5 bootstrap blocks. `hermes_verify_coldstart_drill.py`
+  can now gate all three bootstraps.
+  - [IMPLEMENTED: ark_bootstrap] ARK identity/language/ledger/heartbeat/ready in `CORE/ark_bootstrap.py`
+  - [IMPLEMENTED: auroral_bootstrap] AURORAL identity/language/ledger/heartbeat/ready in `CORE/auroral_bootstrap.py`
+  - [IMPLEMENTED: py_compile] Both compile clean: `python -m py_compile CORE/*_bootstrap.py`
+  - [TODO: verify_drill] Update `hermes_verify_coldstart_drill.py` to import and test all three
 - [c39 omniprime] **Drill the drill in CI order:** run the cold-start drill BEFORE
   `hermes_verify_os_ready.py` in verify_all ordering, so a false `os_ready` can never be
   published by a scan again (os_ready should consume the drill's verdict, not vice versa).

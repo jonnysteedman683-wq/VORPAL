@@ -1,0 +1,112 @@
+{
+  "semantic_extensions": {
+    "T0_logical": {
+      "∧": {"word": "and", "category": "operator", "tier": 0, "semantic": "logical"},
+      "∨": {"word": "or", "category": "operator", "tier": 0, "semantic": "logical"},
+      "¬": {"word": "not", "category": "operator", "tier": 0, "semantic": "logical"},
+      "∀": {"word": "forall", "category": "operator", "tier": 0, "semantic": "quantifier"},
+      "∃": {"word": "exists", "category": "operator", "tier": 0, "semantic": "quantifier"},
+      "∴": {"word": "therefore", "category": "operator", "tier": 0, "semantic": "logical"},
+      "∵": {"word": "because", "category": "operator", "tier": 0, "semantic": "logical"},
+      "⟹": {"word": "implies", "category": "operator", "tier": 0, "semantic": "logical"},
+      "⟺": {"word": "equivalent", "category": "operator", "tier": 0, "semantic": "logical"},
+      "⊥": {"word": "contradiction", "category": "operator", "tier": 0, "semantic": "logical"}
+    },
+    "T1_set_theory": {
+      "∈": {"word": "element_of", "category": "operator", "tier": 1, "semantic": "set_theory"},
+      "∉": {"word": "not_element", "category": "operator", "tier": 1, "semantic": "set_theory"},
+      "⊂": {"word": "subset", "category": "operator", "tier": 1, "semantic": "set_theory"},
+      "⊆": {"word": "subset_eq", "category": "operator", "tier": 1, "semantic": "set_theory"},
+      "∪": {"word": "union", "category": "operator", "tier": 1, "semantic": "set_theory"},
+      "∩": {"word": "intersection", "category": "operator", "tier": 1, "semantic": "set_theory"},
+      "∅": {"word": "emptyset", "category": "operator", "tier": 1, "semantic": "set_theory"},
+      "∞": {"word": "infinity", "category": "operator", "tier": 1, "semantic": "set_theory"},
+      "ℵ": {"word": "aleph", "category": "operator", "tier": 1, "semantic": "set_theory"},
+      "ℕ": {"word": "naturals", "category": "operator", "tier": 1, "semantic": "set_theory"}
+    },
+    "T2_mathematical": {
+      "∫": {"word": "integrate", "category": "action", "tier": 2, "semantic": "math"},
+      "∂": {"word": "partial", "category": "action", "tier": 2, "semantic": "math"},
+      "∇": {"word": "gradient", "category": "action", "tier": 2, "semantic": "math"},
+      "∆": {"word": "delta", "category": "action", "tier": 2, "semantic": "math"},
+      "∑": {"word": "sum", "category": "action", "tier": 2, "semantic": "math"},
+      "∏": {"word": "product", "category": "action", "tier": 2, "semantic": "math"},
+      "√": {"word": "root", "category": "action", "tier": 2, "semantic": "math"},
+      "∂": {"word": "derivative", "category": "action", "tier": 2, "semantic": "math"},
+      "∫": {"word": "integral", "category": "action", "tier": 2, "semantic": "math"},
+      "∞": {"word": "limit", "category": "action", "tier": 2, "semantic": "math"}
+    },
+    "T3_scientific": {
+      "Å": {"word": "angstrom", "category": "unit", "tier": 3, "semantic": "physics"},
+      "℃": {"word": "celsius", "category": "unit", "tier": 3, "semantic": "physics"},
+      "°": {"word": "degree", "category": "unit", "tier": 3, "semantic": "physics"},
+      "λ": {"word": "lambda", "category": "concept", "tier": 3, "semantic": "physics"},
+      "μ": {"word": "mu", "category": "concept", "tier": 3, "semantic": "physics"},
+      "Ω": {"word": "omega", "category": "concept", "tier": 3, "semantic": "physics"},
+      "Φ": {"word": "phi", "category": "concept", "tier": 3, "semantic": "physics"},
+      "Ψ": {"word": "psi", "category": "concept", "tier": 3, "semantic": "physics"},
+      "Γ": {"word": "gamma", "category": "concept", "tier": 3, "semantic": "physics"},
+      "Λ": {"word": "lambda_upper", "category": "concept", "tier": 3, "semantic": "physics"}
+    },
+    "T4_chemical": {
+      "ℋ": {"word": "hydrogen", "category": "element", "tier": 4, "semantic": "chemistry"},
+      "ℌ": {"word": "helium", "category": "element", "tier": 4, "semantic": "chemistry"},
+      "ℒ": {"word": "lithium", "category": "element", "tier": 4, "semantic": "chemistry"},
+      "ℬ": {"word": "beryllium", "category": "element", "tier": 4, "semantic": "chemistry"},
+      "ℬ": {"word": "boron", "category": "element", "tier": 4, "semantic": "chemistry"},
+      "ℭ": {"word": "carbon", "category": "element", "tier": 4, "semantic": "chemistry"},
+      "№": {"word": "nitrogen", "category": "element", "tier": 4, "semantic": "chemistry"},
+      "℧": {"word": "oxygen", "category": "element", "tier": 4, "semantic": "chemistry"},
+      "ℱ": {"word": "fluorine", "category": "element", "tier": 4, "semantic": "chemistry"},
+      "ℕ": {"word": "neon", "category": "element", "tier": 4, "semantic": "chemistry"}
+    },
+    "T5_astronomical": {
+      "☉": {"word": "sun", "category": "celestial", "tier": 5, "semantic": "astronomy"},
+      "☽": {"word": "moon", "category": "celestial", "tier": 5, "semantic": "astronomy"},
+      "★": {"word": "star", "category": "celestial", "tier": 5, "semantic": "astronomy"},
+      "☎": {"word": "planet", "category": "celestial", "tier": 5, "semantic": "astronomy"},
+      "☢": {"word": "radioactive", "category": "attribute", "tier": 5, "semantic": "astronomy"},
+      "☣": {"word": "biohazard", "category": "attribute", "tier": 5, "semantic": "astronomy"},
+      "⚡": {"word": "lightning", "category": "phenomenon", "tier": 5, "semantic": "astronomy"},
+      "❄": {"word": "snowflake", "category": "phenomenon", "tier": 5, "semantic": "astronomy"},
+      "☄": {"word": "comet", "category": "celestial", "tier": 5, "semantic": "astronomy"},
+      "☇": {"word": "lightningbolt", "category": "phenomenon", "tier": 5, "semantic": "astronomy"}
+    },
+    "T6_musical": {
+      "𝄞": {"word": "treble_clef", "category": "symbol", "tier": 6, "semantic": "music"},
+      "𝄢": {"word": "bass_clef", "category": "symbol", "tier": 6, "semantic": "music"},
+      "♩": {"word": "quarter_note", "category": "symbol", "tier": 6, "semantic": "music"},
+      "♪": {"word": "eighth_note", "category": "symbol", "tier": 6, "semantic": "music"},
+      "♫": {"word": "beamed_eighths", "category": "symbol", "tier": 6, "semantic": "music"},
+      "♩": {"word": "semibreve", "category": "symbol", "tier": 6, "semantic": "music"},
+      "♭": {"word": "flat", "category": "modifier", "tier": 6, "semantic": "music"},
+      "♯": {"word": "sharp", "category": "modifier", "tier": 6, "semantic": "music"},
+      "♮": {"word": "natural", "category": "modifier", "tier": 6, "semantic": "music"},
+      "𝄪": {"word": "double_sharp", "category": "modifier", "tier": 6, "semantic": "music"}
+    },
+    "T7_circuit": {
+      "⏚": {"word": "ground", "category": "component", "tier": 7, "semantic": "circuit"},
+      "⏹": {"word": "stop", "category": "component", "tier": 7, "semantic": "circuit"},
+      "⏏": {"word": "eject", "category": "component", "tier": 7, "semantic": "circuit"},
+      "⏎": {"word": "enter", "category": "component", "tier": 7, "semantic": "circuit"},
+      "␣": {"word": "space", "category": "component", "tier": 7, "semantic": "circuit"},
+      "⌫": {"word": "backspace", "category": "component", "tier": 7, "semantic": "circuit"},
+      "⇧": {"word": "shift", "category": "modifier", "tier": 7, "semantic": "circuit"},
+      "⌃": {"word": "control", "category": "modifier", "tier": 7, "semantic": "circuit"},
+      "⎋": {"word": "escape", "category": "component", "tier": 7, "semantic": "circuit"},
+      "⌘": {"word": "command", "category": "modifier", "tier": 7, "semantic": "circuit"}
+    },
+    "T8_cognitive": {
+      "☐": {"word": "task", "category": "concept", "tier": 8, "semantic": "cognitive"},
+      "☑": {"word": "complete", "category": "concept", "tier": 8, "semantic": "cognitive"},
+      "⧖": {"word": "pending", "category": "concept", "tier": 8, "semantic": "cognitive"},
+      "✗": {"word": "error", "category": "concept", "tier": 8, "semantic": "cognitive"},
+      "✓": {"word": "success", "category": "concept", "tier": 8, "semantic": "cognitive"},
+      "⚠": {"word": "warning", "category": "concept", "tier": 8, "semantic": "cognitive"},
+      "⧭": {"word": "search", "category": "action", "tier": 8, "semantic": "cognitive"},
+      "⧖": {"word": "waiting", "category": "concept", "tier": 8, "semantic": "cognitive"},
+      "⏚": {"word": "halt", "category": "action", "tier": 8, "semantic": "cognitive"},
+      "⏽": {"word": "resume", "category": "action", "tier": 8, "semantic": "cognitive"}
+    }
+  }
+}

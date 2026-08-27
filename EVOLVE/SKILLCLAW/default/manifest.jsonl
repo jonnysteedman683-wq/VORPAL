@@ -1,7 +1,10 @@
 {"name": "1password", "description": "Set up op CLI, sign in, and read or inject secrets.", "category": "general", "version": 1}
+{"name": "3-statement-model", "description": "Build integrated IS/BS/CF financial workbooks in Excel.", "category": "general", "version": 1}
+{"name": "adversarial-ux-test", "description": "Roleplay a hostile user to find and triage UX pain points.", "category": "general", "version": 1}
 {"name": "agent-orchestration", "description": "Use when managing multiple specialized AI agents.", "category": "general", "version": 1}
 {"name": "agent-simulation", "description": "Use when building agent-based sims with evolution or RL.", "category": "general", "version": 1}
 {"name": "agent-triad-orchestration", "description": "Use for multi-Hermes-profile worker rings, agent loops.", "category": "general", "version": 1}
+{"name": "agentmail", "description": "Give the agent its own inbox: send and receive email.", "category": "general", "version": 1}
 {"name": "ai-project-integration", "description": "Use when integrating AI projects with Hermes.", "category": "general", "version": 1}
 {"name": "airtable", "description": "Airtable REST API via curl. Records CRUD, filters, upserts.", "category": "general", "version": 1}
 {"name": "alife-simulation", "description": "Evolving AI agent simulations with neural nets and pygame.", "category": "general", "version": 1}
@@ -14,11 +17,18 @@
 {"name": "ascii-art", "description": "ASCII art: pyfiglet, cowsay, boxes, image-to-ascii.", "category": "general", "version": 1}
 {"name": "ascii-video", "description": "ASCII video: convert video/audio to colored ASCII MP4/GIF.", "category": "general", "version": 1}
 {"name": "autonomous-coding-workflow", "description": "Use for autonomous coding: inspect, build, test, commit.", "category": "general", "version": 1}
+{"name": "axolotl", "description": "Axolotl: YAML LLM fine-tuning (LoRA, DPO, GRPO).", "category": "general", "version": 1}
+{"name": "baoyu-article-illustrator", "description": "Article illustrations: type × style × palette consistency.", "category": "general", "version": 1}
+{"name": "baoyu-comic", "description": "Knowledge comics (知识漫画): educational, biography, tutorial.", "category": "general", "version": 1}
 {"name": "baoyu-infographic", "description": "Infographics: 21 layouts x 21 styles (信息图, 可视化).", "category": "general", "version": 1}
+{"name": "bioinformatics", "description": "Gateway to 400+ genomics and computational biology skills.", "category": "general", "version": 1}
+{"name": "blackbox", "description": "Delegate coding tasks to the Blackbox AI multi-model CLI.", "category": "general", "version": 1}
+{"name": "blender-mcp", "description": "Drive Blender via the catalog blender MCP, with bpy recipes.", "category": "general", "version": 1}
 {"name": "blocked-page-recovery", "description": "Recover blocked/paywalled/WAF'd pages via fallbacks.", "category": "general", "version": 1}
 {"name": "blogwatcher", "description": "Monitor blogs and RSS/Atom feeds via blogwatcher-cli tool.", "category": "general", "version": 1}
 {"name": "box", "description": "Box manages cloud files, sharing, search, and metadata.", "category": "general", "version": 1}
 {"name": "brainstorming", "description": "Use when you need to generate ideas, solve problems creatively, or explore possibilities. Provides structured brainstorming techniques and facilitation methods.", "category": "general", "version": 1}
+{"name": "canvas", "description": "Fetch Canvas LMS courses and assignments via API token.", "category": "general", "version": 1}
 {"name": "claude-code", "description": "Delegate coding to Claude Code CLI (features, PRs).", "category": "general", "version": 1}
 {"name": "claude-design", "description": "Design one-off HTML artifacts (landing, deck, prototype).", "category": "general", "version": 1}
 {"name": "codebase-inspection", "description": "Inspect codebases w/ pygount: LOC, languages, ratios.", "category": "general", "version": 1}
@@ -115,7 +125,7 @@
 {"name": "requesting-code-review", "description": "Pre-commit review: security scan, quality gates, auto-fix.", "category": "general", "version": 1}
 {"name": "research-paper-writing", "description": "Write ML papers for NeurIPS/ICML/ICLR: design→submit.", "category": "general", "version": 1}
 {"name": "sdlc-review", "description": "Review Kanban handoffs and route verified outcomes.", "category": "general", "version": 1}
-{"name": "self-evolution-and-code-optimization", "description": "", "category": "general", "version": 1}
+{"name": "self-evolution-and-code-optimization", "description": "Use when a system self-optimizes code, iterates on debate verdicts, or captures PHOENIX CLI AST insights. MARKUS OS evolution feedback loop.", "category": "software-development", "version": 1}
 {"name": "session-librarian", "description": "Organize sessions by prompt: find, rename, archive, prune.", "category": "general", "version": 1}
 {"name": "simplify-code", "description": "Parallel 4-agent cleanup of recent code changes.", "category": "general", "version": 1}
 {"name": "sketch", "description": "Throwaway HTML mockups: 2-3 design variants to compare.", "category": "general", "version": 1}
@@ -137,3 +147,4 @@
 {"name": "xlsx", "description": "Create, read, edit Excel .xlsx workbooks and CSVs.", "category": "general", "version": 1}
 {"name": "xurl", "description": "X/Twitter via xurl CLI: raw post search, posting, DM, media.", "category": "general", "version": 1}
 {"name": "youtube-content", "description": "YouTube transcripts to summaries, threads, blogs.", "category": "general", "version": 1}
+{"name": "yuanbao", "description": "Yuanbao (元宝) groups: @mention users, query info/members.", "category": "general", "version": 1}

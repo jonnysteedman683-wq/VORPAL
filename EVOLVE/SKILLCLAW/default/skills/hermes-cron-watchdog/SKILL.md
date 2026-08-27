@@ -67,3 +67,27 @@ Template: `templates/no_agent_watchdog.py` — copy and adapt.
    validation PASS) and the repo working tree is unchanged (idempotency check).
 3. Prove the cron wiring with `cronjob(action='run', job_id=<id>)` — the run
    report should show `Mode: no_agent (script)` and `Status: silent (empty output)`.
+
+## Distinguishing "silent skip" from "auth no-op" (proven 2026-08-26, SkillClaw feed)
+A silent-unless-notable watchdog that drives a PAID LLM pipeline (SkillClaw
+evolve, batch generate) prints nothing both when it cleanly skipped AND when
+the LLM auth silently failed — exit 0 and empty stdout are identical for the
+two cases, so a healthy-looking silent tick can be burning nothing OR
+delivering nothing while you believe it is working.
+
+**Read the pipeline's structured outcome ledger**, not stdout/exit code. For
+the SkillClaw feed (`C:/Users/jonny/skillclaw/evolve_history.jsonl`, last
+line) the delivery-proving fields are:
+- `had_processing_error: false` — the LLM call path completed without error
+- `elapsed_seconds` (e.g. 57.6) — a real run took real time
+- `sessions` / `no_skill_sessions` — the model actually judged the exports
+- `skills_evolved` / `evolutions` — what (if anything) was produced
+
+`no_skill_sessions=N, evolutions=[]` with `had_processing_error=false` is a
+legitimate clean skip: auth delivered, the model judged, nothing warranted an
+action. That is a PASS — do not treat absence of output as breakage.
+
+Also verify the sync/mirror side-effect independently (ledger counts advanced,
+backup mtimes moved, target dir exists) rather than trusting the script's own
+"synced" print — a skipped pipeline that claims a sync is the same class of
+false-green as an exit-0 that never ran.

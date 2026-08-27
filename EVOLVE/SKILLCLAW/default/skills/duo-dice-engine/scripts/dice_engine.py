@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 """
-Duo Dice Engine — HERMES + MARKUS combined upgrade selector.
+Triad Dice Engine — HERMES + MARKUS + VORPAL upgrade selector.
 
 Rolls the dice that pick the next upgrade, optimisation, or skill-curation
-action for the HERMES ecosystem and the MARKUS OS — together (duo) or one at
-a time (single). Stdlib-only, no network.
+action across the HERMES ecosystem, the MARKUS OS, and the VORPAL agent core —
+together (triad) or individually (single/duo). Stdlib-only, no network.
 
 Mechanics
 ---------
-single : 50% coin gate -> roll 1d12. 1-5 = MARKUS action, 7-11 = HERMES
-         action, 6/12 = DOUBLE REROLL (2 more dice = 2 more options).
-duo    : 50% coin gate -> combined cycle. Lead die 1-3 = HERMES / 4-6 =
-         MARKUS. One action die per system (the pair is split between the 2).
-         6 on either die = that system's double reroll.
+single : 50% coin gate -> roll 1d18. 1-5/7-11/13-17 = MARKUS/HERMES/VORPAL
+         actions, 6/12/18 = DOUBLE REROLL (2 more dice = 2 more options).
+triad  : 50% coin gate -> combined cycle across all 3 systems. Lead die picks
+         the lead system; one action die per system. 6 on any die = that
+         system's double reroll.
+duo    : 50% coin gate -> combined cycle across HERMES + MARKUS only.
 
 Every executed cycle also rolls a curation die:
     1=CURATE  2=ENHANCE  3=OPTIMISE  4=SKIP  5=CURATE+ENHANCE  6=DEEP(all 3)
@@ -42,9 +43,17 @@ DEFAULT_STATE = HOME / ".hermes/dice_engine_state.json"
 
 MARKUS_SLOTS = [1, 2, 3, 4, 5, 6]
 HERMES_SLOTS = [7, 8, 9, 10, 11, 12]
-ALL_SLOTS = list(range(1, 13))
-REROLL_SLOTS = {6, 12}
+VORPAL_SLOTS = [13, 14, 15, 16, 17, 18]
+ALL_SLOTS = list(range(1, 19))
+REROLL_SLOTS = {6, 12, 18}
 EPS = 0.3  # exploration rate
+
+# System -> its 6-slot band (for per-system resolution)
+SYSTEM_BANDS = {
+    "MARKUS": MARKUS_SLOTS,
+    "HERMES": HERMES_SLOTS,
+    "VORPAL": VORPAL_SLOTS,
+}
 
 TABLE: Dict[int, Dict[str, str]] = {
     1: {
@@ -130,6 +139,48 @@ TABLE: Dict[int, Dict[str, str]] = {
         "target": "engine",
         "desc": "HERMES double reroll: roll 2 more dice for extra options.",
         "next": "2 extra dice resolve to 2 more HERMES slots (7-12)",
+    },
+    13: {
+        "system": "VORPAL",
+        "name": "UPGRADE_VORPAL_CORE",
+        "target": "Desktop/VORPAL: CORE/*.py (kernel, syscalls, shell, safety_gate, state_memory_manager, ark_*.py)",
+        "desc": "Upgrade VORPAL's runtime core: kernel/syscalls/safety/state modules.",
+        "next": "py_compile CORE/*.py; verify VORPAL harnesses (VERIFY/harnesses); commit to Desktop/VORPAL",
+    },
+    14: {
+        "system": "VORPAL",
+        "name": "UPGRADE_VORPAL_LINGUA",
+        "target": "Desktop/VORPAL: LINGUA/ (lingua_prima, lp_tool, LINGUA_PROTOCOL.md)",
+        "desc": "Upgrade VORPAL's internal language / compression engine.",
+        "next": "Edit LINGUA modules; run lingua harnesses; py_compile; commit",
+    },
+    15: {
+        "system": "VORPAL",
+        "name": "UPGRADE_VORPAL_SKILLS",
+        "target": "Desktop/VORPAL: EVOLVE/SKILLHUB/SKILLS/ + VERIFY/skills/",
+        "desc": "Upgrade VORPAL's skill library (weapon rack): create/iterate/optimise skills.",
+        "next": "Skill mutation per SOUL §9 (CREATE/ITERATE/REWRITE/MICRO-APPEND); commit",
+    },
+    16: {
+        "system": "VORPAL",
+        "name": "OPTIMISE_VORPAL_PROCESS",
+        "target": "Desktop/VORPAL: EVOLVE/GOALS/GOALS.md, EVOLVE/NOTES.md, registry.json, cost ledger",
+        "desc": "Optimise VORPAL's decision layer: goal-DAG accuracy, ledger hygiene, dead-weight.",
+        "next": "Audit GOALS/NOTES/registry for stale or false claims; fix; commit",
+    },
+    17: {
+        "system": "VORPAL",
+        "name": "RESEARCH_VORPAL_ROADMAP",
+        "target": "Desktop/VORPAL: EVOLVE/IDEAS.md + EVOLVE/GOALS/GOALS.md new goals",
+        "desc": "Research VORPAL upgrade paths and log them to its DAG / ideas.",
+        "next": "Research; append to EVOLVE/IDEAS.md; propose new GOALS entries; commit",
+    },
+    18: {
+        "system": "VORPAL",
+        "name": "VORPAL_DOUBLE_REROLL",
+        "target": "engine",
+        "desc": "VORPAL double reroll: roll 2 more dice for extra options.",
+        "next": "2 extra dice resolve to 2 more VORPAL slots (13-17)",
     },
 }
 
@@ -222,17 +273,55 @@ def resolve_single(rng, rewards: Dict[str, float], eps: float = EPS) -> List[Dic
     return results
 
 
-def resolve_duo(rng, rewards: Dict[str, float], eps: float = EPS) -> Tuple[str, List[Dict[str, Any]]]:
-    """Combined cycle: lead die + one action die per system (split between the 2)."""
-    lead = roll_d(rng)  # 1-3 = HERMES leads, 4-6 = MARKUS leads
-    lead_sys = "HERMES" if lead <= 3 else "MARKUS"
-    hermes_slot = weighted_pick(rng, HERMES_SLOTS, rewards, eps)
-    markus_slot = weighted_pick(rng, MARKUS_SLOTS, rewards, eps)
+def vorpal_goal_pulse() -> float:
+    """Read VORPAL's goal pulse (open-goal fraction) via the MARKUS bridge.
+    Fail-open -> 0.0. Lets the dice steer toward the project with open work."""
+    try:
+        import subprocess as _sp, json as _json
+        p = _sp.run(
+            [sys.executable, r"C:/Users/jonny/OneDrive/Desktop/MARKUS-OS/markus_vorpal_bridge.py",
+             "--status"],
+            capture_output=True, text=True, timeout=10,
+            encoding="utf-8", errors="replace")
+        if p.returncode != 0:
+            return 0.0
+        d = _json.loads(p.stdout)
+        return round(d.get("open_goal_count", 0) / max(1, d.get("goal_count", 1)), 3)
+    except Exception:  # noqa: BLE001
+        return 0.0
+
+
+def resolve_duo(rng, rewards: Dict[str, float], eps: float = EPS,
+                vorpal_bias: float = 0.0) -> Tuple[str, List[Dict[str, Any]]]:
+    """Combined cycle: lead die + one action die per system (split between the 2).
+    When vorpal_bias > 0, the lead die is nudged toward MARKUS (the project whose
+    decision layer feeds the dice) proportional to VORPAL's open-goal pulse."""
+    return resolve_triad(rng, rewards, eps, vorpal_bias,
+                         systems=("HERMES", "MARKUS"))
+
+
+def resolve_triad(rng, rewards: Dict[str, float], eps: float = EPS,
+                  vorpal_bias: float = 0.0,
+                  systems: Tuple[str, ...] = ("HERMES", "MARKUS", "VORPAL"),
+                  lead_order: Tuple[str, ...] = ("HERMES", "MARKUS", "VORPAL")) -> Tuple[str, List[Dict[str, Any]]]:
+    """Combined cycle across N systems (default triad: HERMES, MARKUS, VORPAL).
+    Lead die picks the lead system; one action die per system (the pair is split
+    between all systems). A 6 on any system's die = that system's double reroll."""
+    lead = roll_d(rng)
+    # Distribute lead across lead_order proportionally to a d-len dice.
+    lead = _rbelow(rng, len(lead_order)) + 1  # 1..N
+    if vorpal_bias > 0 and _rand01(rng) < vorpal_bias:
+        # Bias the lead toward the system with the highest open-goal pulse.
+        # Simplest: bias toward MARKUS (the VORPAL-fed side) when pulse is high.
+        lead = lead_order.index("MARKUS") + 1 if "MARKUS" in lead_order else lead
+    lead_sys = lead_order[min(len(lead_order) - 1, lead - 1)]
     results: List[Dict[str, Any]] = []
-    for sysname, s in (("HERMES", hermes_slot), ("MARKUS", markus_slot)):
+    for sysname in systems:
+        band = SYSTEM_BANDS[sysname]
+        s = weighted_pick(rng, band, rewards, eps)
         if s in REROLL_SLOTS:
             results.append(slot_info(s, reroll=True))
-            sub_pool = HERMES_SLOTS if sysname == "HERMES" else MARKUS_SLOTS
+            sub_pool = [x for x in band if x not in REROLL_SLOTS]
             for _ in range(2):
                 results.append(slot_info(weighted_pick_action(rng, sub_pool, rewards, eps)))
         else:
@@ -306,13 +395,13 @@ def log_cycle(roadmap: Path, mode: str, coin_pass: bool, results: List[Dict[str,
 # CLI
 # --------------------------------------------------------------------------
 def cmd_actions(args) -> int:
-    print(f"Duo Dice Engine v{VERSION} — 12-slot HERMES+MARKUS map\n")
+    print(f"Duo Dice Engine v{VERSION} — 18-slot HERMES+MARKUS+VORPAL map\n")
     print(f"{'Slot':<5}{'System':<8}{'Action':<32}{'Target'}")
     for s in ALL_SLOTS:
         row = TABLE[s]
         print(f"{s:<5}{row['system']:<8}{row['name']:<32}{row['target']}")
-    print("\nMechanics: 50% coin gate | 6/12 = double reroll (2 extra dice) | reward-weighted (eps-greedy)")
-    print("Duo mode: lead die 1-3=HERMES/4-6=MARKUS, dice split one-per-system, 6 = that system's reroll.")
+    print("\nMechanics: 50% coin gate | 6/12/18 = double reroll (2 extra dice) | reward-weighted (eps-greedy)")
+    print("Modes: single (1d18) | duo (HERMES+MARKUS) | triad (HERMES+MARKUS+VORPAL, one die each)")
     return 0
 
 
@@ -324,8 +413,12 @@ def cmd_roll(args) -> int:
         lead_sys = None
     else:
         rewards = rewards_map(load_state(_state_path(args)))
-        if args.mode == "duo":
-            lead_sys, results = resolve_duo(rng, rewards, args.eps)
+        if args.mode == "triad":
+            vbias = vorpal_goal_pulse() if args.vorpal else 0.0
+            lead_sys, results = resolve_triad(rng, rewards, args.eps, vorpal_bias=vbias)
+        elif args.mode == "duo":
+            vbias = vorpal_goal_pulse() if args.vorpal else 0.0
+            lead_sys, results = resolve_duo(rng, rewards, args.eps, vorpal_bias=vbias)
         else:
             lead_sys = None
             results = resolve_single(rng, rewards, args.eps)
@@ -350,8 +443,8 @@ def cmd_roll(args) -> int:
 
 
 def cmd_reward(args) -> int:
-    if not (1 <= args.slot <= 12):
-        print(f"ERROR: slot {args.slot} out of range 1-12")
+    if not (1 <= args.slot <= 18):
+        print(f"ERROR: slot {args.slot} out of range 1-18")
         return 2
     if not (0.0 <= args.value <= 1.0):
         print(f"ERROR: value {args.value} must be 0.0-1.0")
@@ -389,18 +482,15 @@ def cmd_verify(args) -> int:
         ok = False
         checks.append(("py_compile self", False, str(e)))
 
-    # 2. single mode reaches all 12 slots
+    # 2. single mode reaches all 18 slots
     seen = set()
     rng_cov = _rng(args.seed)
-    for _ in range(4000):
+    for _ in range(6000):
         for r in resolve_single(rng_cov, {}):
-            if not r["reroll"]:
-                seen.add(r["slot"])
-            else:
-                seen.add(r["slot"])
-    ok1 = all(s in seen for s in range(1, 13))
+            seen.add(r["slot"])
+    ok1 = all(s in seen for s in range(1, 19))
     ok = ok and ok1
-    checks.append(("single mode covers all 12 slots", ok1, f"hit={sorted(seen)}"))
+    checks.append(("single mode covers all 18 slots", ok1, f"hit={sorted(seen)}"))
 
     # 3. coin ~50%
     rng = _rng(args.seed + 1)
@@ -410,7 +500,7 @@ def cmd_verify(args) -> int:
     ok = ok and okc
     checks.append(("coin gate ~50%", okc, f"passed={passed}/2000 ({frac:.3f})"))
 
-    # 4. duo mode always touches both systems
+    # 4. duo mode always touches both systems; triad touches all 3
     both = True
     rng_duo = _rng(args.seed + 2)
     for _ in range(2000):
@@ -421,6 +511,17 @@ def cmd_verify(args) -> int:
             break
     ok = ok and both
     checks.append(("duo always touches both systems", both, ""))
+
+    all3 = True
+    rng_triad = _rng(args.seed + 3)
+    for _ in range(2000):
+        _, res = resolve_triad(rng_triad, {})
+        systems = {r["system"] for r in res if not r["reroll"]}
+        if not ({"HERMES", "MARKUS", "VORPAL"} <= systems):
+            all3 = False
+            break
+    ok = ok and all3
+    checks.append(("triad always touches all 3 systems", all3, ""))
 
     # 5. roadmap dir writable
     try:
@@ -452,8 +553,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     sub = p.add_subparsers(dest="cmd", required=True)
 
     pr = sub.add_parser("roll", help="roll the dice and log the cycle")
-    pr.add_argument("--mode", choices=["single", "duo"], default="single")
+    pr.add_argument("--mode", choices=["single", "duo", "triad"], default="triad")
     pr.add_argument("--force", action="store_true", help="bypass the 50% coin gate")
+    pr.add_argument("--vorpal", action="store_true",
+                    help="bias the lead die toward MARKUS by VORPAL's open-goal pulse")
     pr.add_argument("--dry-run", action="store_true", help="print only, do not write roadmap")
     pr.add_argument("--json", action="store_true", help="machine-readable output")
     pr.add_argument("--seed", type=int, default=None, help="seeded RNG (tests only)")

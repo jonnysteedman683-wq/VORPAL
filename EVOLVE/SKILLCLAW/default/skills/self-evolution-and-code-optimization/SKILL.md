@@ -1,12 +1,3 @@
-
-
-# === Auto-Patch Section ===
-- Pattern: Debate pipeline effectiveness. Verdict: Debate verdict: markus-forensic-sentinel (confidence=24.8%, consensus=BLOCKED) (auto-appended 1787715080)
-- Pattern: Debate pipeline effectiveness. Verdict: Debate verdict: markus-forensic-sentinel (confidence=25.6%, consensus=BLOCKED) (auto-appended 1787714731)
-- Pattern: Debate pipeline effectiveness. Verdict: Debate verdict: markus-forensic-sentinel (confidence=24.9%, consensus=BLOCKED) (auto-appended 1787680420)
-- Pattern: Debate pipeline effectiveness. Verdict: Debate verdict: markus-forensic-sentinel (confidence=25.0%, consensus=BLOCKED) (auto-appended 1787680346)
-# This section is auto-managed by CortexSkillPatcher. Do not edit manually.
-- Pattern: Debate pipeline effectiveness. Verdict: Debate verdict: markus-forensic-sentinel (confidence=25.0%, consensus=BLOCKED) (auto-appended 1787680051)
 ---
 name: self-evolution-and-code-optimization
 category: software-development
@@ -37,3 +28,11 @@ back into code or process.
 - Never overwrite the Auto-Patch Section — it is machine-managed.
 - A patch that fails py_compile must be reverted, not left in place.
 - Reward weights in the dice engine update only AFTER a verified green patch.
+
+# === Auto-Patch Section ===
+- Pattern: Debate pipeline effectiveness. Verdict: Debate verdict: markus-forensic-sentinel (confidence=24.8%, consensus=BLOCKED) (auto-appended 1787715080)
+- Pattern: Debate pipeline effectiveness. Verdict: Debate verdict: markus-forensic-sentinel (confidence=25.6%, consensus=BLOCKED) (auto-appended 1787714731)
+- Pattern: Debate pipeline effectiveness. Verdict: Debate verdict: markus-forensic-sentinel (confidence=24.9%, consensus=BLOCKED) (auto-appended 1787680420)
+- Pattern: Debate pipeline effectiveness. Verdict: Debate verdict: markus-forensic-sentinel (confidence=25.0%, consensus=BLOCKED) (auto-appended 1787680346)
+# This section is auto-managed by CortexSkillPatcher. Do not edit manually.
+- Pattern: Debate pipeline effectiveness. Verdict: Debate verdict: markus-forensic-sentinel (confidence=25.0%, consensus=BLOCKED) (auto-appended 1787680051)

@@ -161,3 +161,27 @@ Class-level CLI workflow for acquiring and enabling Hermes skills:
   frontend-design, web-artifacts-builder, pdf, docx, xlsx, pptx). When web tools are dead, use
   `gh search repos "agent skills"` / `gh api repos/<o>/<r>/contents/skills`.
 
+## Proven pitfalls (added 2026-08-27, kanban t_25abb40a)
+
+- **Skills nested deeper than `skills/`**: OMH-style repos keep skills under `plugins/omh/skills/<name>`. A bare
+  `owner/repo/<skill>` name fails with `No skill named '<x>' found in any source` even after `tap add` (taps map to
+  `skills/` only). Use the FULL nested path:
+  `hermes skills install witt3rd/oh-my-hermes/plugins/omh/skills/omh-ralplan` → works, verdict SAFE.
+- **`hermes skills install` takes ONE identifier**: the argparser rejects a space-separated list of skill names
+  (`unrecognized arguments`) — loop the installs in bash.
+- **Scanner false positive on prose-only SKILL.md**: pure-documentation skills that merely *mention* agent-rules
+  files (`CLAUDE.md`/`AGENTS.md`) or `tasks/` paths get flagged `CRITICAL persistence` / `MEDIUM traversal` and
+  BLOCKED. Verified cases: `addyosmani/agent-skills/skills/planning-and-task-breakdown`,
+  `Neeeophytee/finding-unknowns-skills/{context-audit,progressive-disclosure}`. Confirm the file is prose-only
+  (no executable code), then manual-copy `cp -r <repo>/skills/<name> "$LOCALAPPDATA/hermes/skills/<name>"`. The copy
+  registers as `local` + `enabled` by filesystem scan; byte-diff against upstream to prove fidelity.
+- **`hermes skills install owner/repo/path` fetch failure is NOT always a typo**: `OthmanAdi/planning-with-files`
+  fails from every identifier form (`owner/repo/skills/<name>`, `skills-sh/othmanadi/...`, direct SKILL.md URL,
+  even after `tap add`). skills.sh index resolution bug. Fallback: clone + `cp -r` the skill dir.
+- **Repo slugs in candidate lists can be typo'd**: `Neeephythee/finding-unknowns-skills` → real repo is
+  `Neeeophytee/finding-unknowns-skills`. Always `gh api repos/<o>/<r>` the repo before installing; fall back to
+  `gh search repos <topic>` to find the true slug.
+- **Verify taps didn't duplicate on retry**: failed fetch attempts can leave lowercase/uppercase duplicate tap
+  entries in `.hub/taps.json` (`othmanadi/...` vs `OthmanAdi/...`). Run `hermes skills tap remove <dupe>` and
+  re-list to confirm a clean set.
+
