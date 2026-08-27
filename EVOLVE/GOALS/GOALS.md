@@ -13,17 +13,21 @@ Lingua status P|F|V3 (see syscalls.py `LinguaStatus`).
   - [IMPLEMENTED: state_memory_manager]
 - [x] **[a1->b2->t2] GOAL_1.2:** External LLM/API Handshake Protocol
   - [STATUS: tier_0_apex] (Skill: `provider_handshake`)
+  - [IMPLEMENTED: provider_handshake]
 
 ## PHASE 2: EVOLUTION INFRASTRUCTURE (EVOLVE layer)
 - [x] **[a2->b1->t1] GOAL_2.1:** Initialize Evolutionary Workspace
   - [STATUS: COMPLETE] (Folder: `./EVOLVE/{GOALS,SKILLHUB,TESTS}`)
+  - [IMPLEMENTED: EVOLVE workspace]
 - [x] **[a2->b2->t0] GOAL_2.2:** Populate EVOLVE/GOALS.md
   - [STATUS: tier_0_apex] (Location: `./EVOLVE/GOALS/GOALS.md`)
+  - [IMPLEMENTED: GOALS.md]
 - [x] **[a2->b3->t1] GOAL_2.3:** Digital Pyramid File Structure
   - [STATUS: tier_0_apex] (Location: `./EVOLVE/SKILLHUB/SKILLS/pyramid/`)
   - [IMPLEMENTED: pyramid_walker]
 - [x] **[a2->b4->t1] GOAL_2.4:** Directory Paths & PATHLEX Language
   - [STATUS: COMPLETE] (Location: `./EVOLVE/SKILLHUB/DIRECTORY_PATHS/`)
+  - [IMPLEMENTED: DIRECTORY_PATHS]
 
 ## PHASE 3: RESILIENCE PATTERN ENGINE (Patterns from AEGIS/Hermes)
 - [x] **[a3->b1->t0] GOAL_3.1:** Circuit Breaker Subsystem
@@ -35,6 +39,7 @@ Lingua status P|F|V3 (see syscalls.py `LinguaStatus`).
   - [UNLOCKS: GOAL_6.1 - HIVE Integration Bridge now unblocked
 - [x] **[a3->b3->t1] GOAL_3.3:** Pattern Library Documentation
   - [STATUS: COMPLETE] (Location: `./EVOLVE/SKILLHUB/DIRECTORY_PATHS/PATTERN_LIBRARY.md`)
+  - [IMPLEMENTED: PATTERN_LIBRARY]
 - [x] **[a3->b4->t0] GOAL_3.4:** Auto Debugger (Self-Correction Compiler)
   - [STATUS: tier_0_apex] (Skill: `auto_debugger`)
   - [IMPLEMENTED: auto_debugger]
@@ -48,6 +53,7 @@ Lingua status P|F|V3 (see syscalls.py `LinguaStatus`).
   - [IMPLEMENTED: loop_creator]
 - [x] **[a4->b2->t1] GOAL_4.2:** Adaptive Model Selector (Stolen Patterns)
   - [STATUS: tier_1_active] (Skill: `adaptive_model_selector`)
+  - [IMPLEMENTED: adaptive_model_selector]
   - [STOLEN FROM: cost_router.ts + dispatcher.ts — semantic routing + stream selection]
 
 ## PHASE 5: STRATEGIC INFRASTRUCTURE (Hacked from Databases)
@@ -74,6 +80,7 @@ Lingua status P|F|V3 (see syscalls.py `LinguaStatus`).
   - v4.1: 205 tokens + 115 Unicode symbols + 29 compounds + 10 macros + 17 signals = 359 concepts
 - [x] **[a5->b6->t1] GOAL_5.6:** Harvested Patterns Database
   - [STATUS: COMPLETE] (Location: `./EVOLVE/SKILLHUB/SKILLS/pyramid/PROCEDURE/protocols/harvested_patterns_database.md`)
+  - [IMPLEMENTED: harvested patterns DB]
   - [STOLEN FROM: 10 OMNICORE/OMNIBUS databases across A1/A2/A3 layers]
 - [x] **[a5->b7->t0] GOAL_5.7:** Auto-Steal Engine (24/7 Pattern Harvesting)
   - [STATUS: tier_0_apex] (Skill: `auto_steal_engine`)
@@ -106,6 +113,7 @@ Lingua status P|F|V3 (see syscalls.py `LinguaStatus`).
 
 - [x] **[a5->b12->t1] GOAL_5.12:** Code Harvest Phase 1
   - [STATUS: tier_0_apex]
+  - [IMPLEMENTED: code harvest phase 1]
   - 12 TypeScript files stolen + ported from OMNICORE-A1
   - 84 tests passing across 12 test suites
 
