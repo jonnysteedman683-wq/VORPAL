@@ -30,7 +30,6 @@ PYRAMID_BASE = Path(__file__).parent
 sys.path.insert(0, str(PYRAMID_BASE.parent))
 
 from apex.core.p2p_state_registry import PeerRegistry, PeerState
-from apex.core.health_watchdog import HealthWatchdog
 
 
 @dataclass
