@@ -1,0 +1,37 @@
+{
+  "worktree": "C:\\Users\\jonny\\OneDrive\\Desktop\\VORPAL",
+  "profile": "default",
+  "ledger_balance": 500,
+  "last_spend": "2026-08-26T00:00:00.000000+00:00",
+  "lineage": {
+    "parent": "triad (ARK + OMNIPRIME + AURORAL)",
+    "absorbed_on": "2026-08-26",
+    "gen2_spawn_kit": "DROPPED",
+    "ownership_ring": "DROPPED",
+    "bus_protocol": "DROPPED"
+  },
+  "last_cycle": {
+    "cycle": 1,
+    "profile": "default",
+    "ts": "2026-08-26T00:00:00.000000+00:00",
+    "shipped": [
+      "SOUL.md",
+      "CONSOLIDATION.md",
+      "CORE/ (15 modules)",
+      "LINGUA/ (lingua_prima + lp_tool)"
+    ],
+    "verify_gate": "4/4 active PASS (6 quarantined + 1 stale inert)",
+    "py_compile": "30/30 PASS"
+  },
+  "active_syscalls": [
+    "verify",
+    "quarantine",
+    "log_err",
+    "cache_check",
+    "ledger_balance",
+    "ledger_spend",
+    "tag"
+  ],
+  "verified_artifacts": {},
+  "verified_artifacts_schema": 1
+}

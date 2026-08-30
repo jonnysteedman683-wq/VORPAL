@@ -1,0 +1,36 @@
+{
+ "session_id": "20260828_054139_f71362",
+ "task_id": "Friendly greeting #13",
+ "num_turns": 44,
+ "aggregate": {
+  "mean_score": 0.3,
+  "success_count": 0,
+  "fail_count": 1,
+  "stability": "all_fail"
+ },
+ "_skills_referenced": [],
+ "_created_new_skill": false,
+ "_avg_prm": 0.4,
+ "_has_tool_errors": true,
+ "_trajectory": [
+  {
+   "step": 1,
+   "role": "user",
+   "tool": null,
+   "detail": "hello"
+  },
+  {
+   "step": 2,
+   "role": "assistant",
+   "tool": null,
+   "detail": "Hello! What would you like to work on?"
+  },
+  {
+   "step": 3,
+   "role": "user",
+   "tool": null,
+   "detail": "MARKUS VORPAL and the Citadel"
+  }
+ ],
+ "_summary": "Session 'Friendly greeting #13' started 2026-08-28 05:41. Goal: hello. 36 messages, 3 analyzed steps, 6 tool error(s) (read_file, skill_view). Skills referenced/created: none. Outcome: failed."
+}
